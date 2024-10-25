@@ -8,10 +8,18 @@ namespace DotnetSubtitleConverter
 {
 	internal class SubtitleData
 	{
-
-		public required DateTime time;
+		//start
+		public required int startHour = 0;
+		public required int startMinute = 0;
+		public required int startSecond = 0;
+		public required int startMicrosecond;
+		//end
+		public required int endHour = 0;
+		public required int endMinute = 0;
+		public required int endSecond = 0;
+		public required int endMicrosecond;
+		//content
 		public required string subtitleContent;
-		public int subNum; //number above the timestamp in SRT subtitles
 
 	}
 }

@@ -9,10 +9,9 @@ namespace DotnetSubtitleConverter.Subtitles
     internal static class SRT
     {
 
-        public SubtitleData[] GetSubtitleData()
+        public static SubtitleData[] GetSubtitleData()
         {
             throw new NotImplementedException();
         }
-
     }
 }
