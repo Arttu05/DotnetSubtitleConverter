@@ -8,6 +8,10 @@ namespace DotnetSubtitleConverter.Subtitles
 {
     internal static class VTT
     {
+        public static List<SubtitleData> GetSubtitleData()
+        {
+            throw new NotImplementedException();
+        }
 
         public static string GetConvertedString(SubtitleData[] subtitleDataArray)
         {
@@ -26,7 +30,15 @@ namespace DotnetSubtitleConverter.Subtitles
             return convertedString;
         }
 
-		private static string GetTimeString(SubtitleData subtitleData)
+		public static bool Check()
+		{
+
+			return true;
+		}
+
+
+        //example output "00:00:00,000 --> 00:00:10,210"
+        private static string GetTimeString(SubtitleData subtitleData)
 		{
 			// https://www.w3.org/TR/webvtt1/#file-structure
 			string outputString = "";

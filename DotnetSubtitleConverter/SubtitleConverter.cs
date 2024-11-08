@@ -1,4 +1,6 @@
-﻿namespace DotnetSubtitleConverter
+﻿using DotnetSubtitleConverter.Subtitles;
+
+namespace DotnetSubtitleConverter
 {
 	public static class SubtitleConverter
 	{
@@ -15,9 +17,19 @@
 				throw new FileNotFoundException($"File \"{filePath}\" not found");
 			}
 
-			Stream fileStream = GetFileStream(filePath);
+			StreamReader fileStream = GetFileStream(filePath);
 			SubtitleType inputSubtitleType = GetSubtitleType(fileStream);
+			List<SubtitleData> subtitleData = new List<SubtitleData>();
 
+			switch (inputSubtitleType)
+			{
+				case SubtitleType.SRT:
+					subtitleData = SRT.GetSubtitleData();
+					break;
+				case SubtitleType.VTT:
+					subtitleData = VTT.GetSubtitleData();
+					break;
+			}
 
 			return true;
 		}
@@ -27,14 +39,14 @@
 			throw new NotImplementedException();
 		}
 
-		private static SubtitleType GetSubtitleType(Stream filePath)
+		private static SubtitleType GetSubtitleType(StreamReader fileStream)
 		{ 
 			throw new NotImplementedException();
 			
 		}
 
 		// private functions
-		private static Stream GetFileStream(string filePath)
+		private static StreamReader GetFileStream(string filePath)
 		{
 			if (File.Exists(filePath) == false)
 			{
@@ -42,8 +54,7 @@
 			}
 
 			StreamReader sr = new StreamReader(filePath);
-
-			return sr.BaseStream;
+			return sr;
 		}
 	}
 }
