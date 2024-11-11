@@ -24,12 +24,14 @@ namespace DotnetSubtitleConverter
 			switch (inputSubtitleType)
 			{
 				case SubtitleType.SRT:
-					subtitleData = SRT.GetSubtitleData();
+					subtitleData = SRT.GetSubtitleData(ref fileStream);
 					break;
 				case SubtitleType.VTT:
 					subtitleData = VTT.GetSubtitleData();
 					break;
 			}
+
+
 
 			return true;
 		}
@@ -41,7 +43,7 @@ namespace DotnetSubtitleConverter
 
 		private static SubtitleType GetSubtitleType(StreamReader fileStream)
 		{ 
-			throw new NotImplementedException();
+			return SubtitleType.SRT; //TODO Fix this
 			
 		}
 

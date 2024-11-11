@@ -32,8 +32,7 @@ namespace DotnetSubtitleConverter.Subtitles
                 SetTimeArrayToClass(timeArray, ref currentSubtitleData);
 
                 //reading subtitle content
-                string subtitleContent = "";
-                // TODO: Read subtitle content here
+                string subtitleContent = GetSubtitleContent(ref reader);
                 currentSubtitleData.subtitleContent = subtitleContent;
                 
                 outputList.Add(currentSubtitleData);
@@ -153,5 +152,19 @@ namespace DotnetSubtitleConverter.Subtitles
             subtitleData.endSecond = timeArray[6];
 			subtitleData.endMicrosecond = timeArray[7];
 		}
+
+        private static string GetSubtitleContent(ref StreamReader reader)
+        {
+            string outputString = reader.ReadLine() ?? throw new NullReferenceException();
+            string? currentLine = reader.ReadLine();
+            while(currentLine != null && currentLine != "")
+            {
+                outputString += "\n";
+                outputString += currentLine;
+                currentLine = reader.ReadLine();
+            }
+
+            return outputString;
+        }
     }
 }
