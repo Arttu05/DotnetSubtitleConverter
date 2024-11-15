@@ -13,17 +13,18 @@ namespace DotnetSubtitleConverter.Subtitles
             throw new NotImplementedException();
         }
 
-        public static string GetConvertedString(SubtitleData[] subtitleDataArray)
+        public static string GetConvertedString(List<SubtitleData> subtitleDataArray)
         {
             string convertedString = "";
 
             convertedString += "WEBVTT\n\n";
 
-			for (int i = 0; i < subtitleDataArray.Length; i++)
+			for (int i = 0; i < subtitleDataArray.Count; i++)
             {
 				convertedString += GetTimeString(subtitleDataArray[i]);
 				convertedString += "\n";
 				convertedString += subtitleDataArray[i].subtitleContent;
+				convertedString += "\n";
 				convertedString += "\n";
             }
 
@@ -48,7 +49,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			outputString += subtitleData.startMinute;
 			outputString += ":";
 			outputString += subtitleData.startSecond;
-			outputString = ".";
+			outputString += ".";
 			outputString += subtitleData.startMicrosecond;
 
 			// "arrow"
@@ -60,7 +61,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			outputString += subtitleData.endMinute;
 			outputString += ":";
 			outputString += subtitleData.endSecond;
-			outputString = ".";
+			outputString += ".";
 			outputString += subtitleData.endMicrosecond;
 
 			return outputString;

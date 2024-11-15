@@ -10,7 +10,7 @@ namespace DotnetSubtitleConverter
 			VTT
 		}
 
-		public static bool ConvertTo(string filePath, SubtitleType subtitleType)
+		public static string ConvertTo(string filePath, SubtitleType subtitleType)
 		{
 			if (File.Exists(filePath) == false)
 			{
@@ -31,9 +31,18 @@ namespace DotnetSubtitleConverter
 					break;
 			}
 
+			string outputString = "";
+			switch (subtitleType)
+			{
+				case SubtitleType.SRT:
+					break;
+				case SubtitleType.VTT:
+					outputString = VTT.GetConvertedString(subtitleData);
+					break;
+			}
 
 
-			return true;
+			return outputString;
 		}
 
 		public static SubtitleType GetSubtitleType(string filePath)
