@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetSubtitleConverter", "DotnetSubtitleConverter\DotnetSubtitleConverter.csproj", "{CCDC4AAA-02B5-4EB4-9B2C-BC45BDC898BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{D0BC48AF-D49A-4DF5-BA99-20AD39B91AAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NunitTests", "Tests\NunitTests.csproj", "{F9E9ADC6-3D27-451B-9542-C36D1CEA6027}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{CCDC4AAA-02B5-4EB4-9B2C-BC45BDC898BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCDC4AAA-02B5-4EB4-9B2C-BC45BDC898BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCDC4AAA-02B5-4EB4-9B2C-BC45BDC898BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0BC48AF-D49A-4DF5-BA99-20AD39B91AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0BC48AF-D49A-4DF5-BA99-20AD39B91AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0BC48AF-D49A-4DF5-BA99-20AD39B91AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0BC48AF-D49A-4DF5-BA99-20AD39B91AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9E9ADC6-3D27-451B-9542-C36D1CEA6027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9E9ADC6-3D27-451B-9542-C36D1CEA6027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9E9ADC6-3D27-451B-9542-C36D1CEA6027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9E9ADC6-3D27-451B-9542-C36D1CEA6027}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
