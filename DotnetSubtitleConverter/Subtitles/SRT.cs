@@ -16,7 +16,6 @@ namespace DotnetSubtitleConverter.Subtitles
 
             reader.DiscardBufferedData(); // goes to begining of stream
 
-            int i = 0;
             while (reader.EndOfStream == false) 
             {
                 SubtitleData currentSubtitleData = new SubtitleData(); 
@@ -36,7 +35,6 @@ namespace DotnetSubtitleConverter.Subtitles
                 currentSubtitleData.subtitleContent = subtitleContent;
                 
                 outputList.Add(currentSubtitleData);
-                i++;
             }
 
             return outputList;
@@ -47,9 +45,29 @@ namespace DotnetSubtitleConverter.Subtitles
             throw new NotImplementedException();
         }
 
-        public static bool Check()
+        public static bool Check(ref StreamReader reader)
         {
-            throw new NotImplementedException();
+            reader.DiscardBufferedData();
+            for (int i = 0; i < 1;i++)
+            {
+                try
+                {
+                    ReadNum(ref reader);
+
+                    int[] tempArr = ReadTimeString(ref reader);
+                    SubtitleData tempClass = new SubtitleData();
+                    SetTimeArrayToClass(tempArr, ref tempClass);
+
+                    GetSubtitleContent(ref reader);
+                }
+                catch (Exception e) 
+                {
+                    return false;
+                }
+
+            }
+
+            return true;
         }
 
         //example output "00:00:00,000 --> 00:00:10,210"
@@ -103,7 +121,7 @@ namespace DotnetSubtitleConverter.Subtitles
         // [4-7] end times      h m s ms
         private static int[] ReadTimeString(ref StreamReader reader)
         {
-            string regexPattern = "\\d{2}:\\d{2}:\\d{2},\\d{3} --> \\d{2}:\\d{2}:\\d{2},\\d{3}";
+            string regexPattern = "^\\d{1,3}:\\d{1,2}:\\d{1,2}.\\d{3} --> \\d{1,3}:\\d{1,2}:\\d{1,2}.\\d{3}";
 			string? rawTimeString = reader.ReadLine();
             if(rawTimeString == null)
             {

@@ -18,7 +18,7 @@ namespace DotnetSubtitleConverter
 			}
 
 			StreamReader fileStream = GetFileStream(filePath);
-			SubtitleType inputSubtitleType = GetSubtitleType(fileStream);
+			SubtitleType inputSubtitleType = GetSubtitleType(ref fileStream);
 			List<SubtitleData> subtitleData = new List<SubtitleData>();
 
 			switch (inputSubtitleType)
@@ -27,7 +27,7 @@ namespace DotnetSubtitleConverter
 					subtitleData = SRT.GetSubtitleData(ref fileStream);
 					break;
 				case SubtitleType.VTT:
-					subtitleData = VTT.GetSubtitleData();
+					subtitleData = VTT.GetSubtitleData(ref fileStream);
 					break;
 			}
 
@@ -35,6 +35,7 @@ namespace DotnetSubtitleConverter
 			switch (subtitleType)
 			{
 				case SubtitleType.SRT:
+					outputString = SRT.GetConvertedString();
 					break;
 				case SubtitleType.VTT:
 					outputString = VTT.GetConvertedString(subtitleData);
@@ -50,10 +51,18 @@ namespace DotnetSubtitleConverter
 			throw new NotImplementedException();
 		}
 
-		private static SubtitleType GetSubtitleType(StreamReader fileStream)
-		{ 
-			return SubtitleType.SRT; //TODO Fix this
-			
+		private static SubtitleType GetSubtitleType(ref StreamReader fileStream)
+		{
+			if(SRT.Check(ref fileStream))
+			{
+				return SubtitleType.SRT;
+			}
+			if (VTT.Check(ref fileStream))
+			{
+				return SubtitleType.VTT;
+			}
+
+			throw new Exception("subtitle is not valid or not in supported format");
 		}
 
 		// private functions

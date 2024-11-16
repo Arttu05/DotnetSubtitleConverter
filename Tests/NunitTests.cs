@@ -3,27 +3,40 @@ namespace NunitTests
 {
     public class SubtitleTests
     {
-        string SRTFile = "./SRT_example.txt";
-        string SRT_To_VTT_Path = "./SRT_To_VTT.txt";
+        const string SRT_FILE = "./SRT_example.srt";
+        const string SRT_TO_VTT_PATH = "./SRT_To_VTT.vtt";
+        const string VTT_FILE = "./VTT_example.vtt";
+        const string VTT_TO_SRT_PATH = "./VTT_To_SRT.srt";
 
         [OneTimeSetUp]
         public void Setup()
         {
-            if(File.Exists(SRTFile) == false)
+            //SRT checks
+            if(File.Exists(SRT_FILE) == false)
             {
                 Assert.Fail("SRT file not found");
             }
-            if (File.Exists(SRT_To_VTT_Path))
+            if (File.Exists(SRT_TO_VTT_PATH))
             {
-                File.Delete(SRT_To_VTT_Path);
+                File.Delete(SRT_TO_VTT_PATH);
+            }
+
+            //VTT checks
+            if(File.Exists(VTT_FILE) == false)
+            {
+                Assert.Fail("VTT file not found");
+            }
+            if (File.Exists(VTT_TO_SRT_PATH))
+            {
+                File.Delete(VTT_TO_SRT_PATH);
             }
         }
 
         [Test]
         public void SRT_To_VTT()
         {
-            string output = SubtitleConverter.ConvertTo(SRTFile, SubtitleConverter.SubtitleType.VTT);
-            StreamWriter sw = new StreamWriter(SRT_To_VTT_Path);
+            string output = SubtitleConverter.ConvertTo(SRT_FILE, SubtitleConverter.SubtitleType.VTT);
+            StreamWriter sw = new StreamWriter(SRT_TO_VTT_PATH);
             sw.WriteLine(output);
             sw.Close();
             Assert.Pass();
@@ -31,7 +44,11 @@ namespace NunitTests
         [Test]
         public void VTT_To_SRT()
         {
-            Assert.Pass();
-        }
+            string output = SubtitleConverter.ConvertTo(VTT_FILE, SubtitleConverter.SubtitleType.SRT);
+			StreamWriter sw = new StreamWriter(VTT_TO_SRT_PATH);
+			sw.WriteLine(output);
+			sw.Close();
+			Assert.Pass();
+		}
     }
 }

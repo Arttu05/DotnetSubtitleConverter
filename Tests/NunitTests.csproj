@@ -26,7 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="SRT_example.txt">
+    <None Update="SRT_example.srt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VTT_example.vtt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
