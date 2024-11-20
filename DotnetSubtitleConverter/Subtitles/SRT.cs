@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,8 +14,6 @@ namespace DotnetSubtitleConverter.Subtitles
         public static List<SubtitleData> GetSubtitleData(ref StreamReader reader)
         {
             List<SubtitleData> outputList = new List<SubtitleData>();
-
-            reader.DiscardBufferedData(); // goes to begining of stream
 
             while (reader.EndOfStream == false) 
             {
@@ -40,14 +39,26 @@ namespace DotnetSubtitleConverter.Subtitles
             return outputList;
         }
 
-        public static string GetConvertedString()
+        public static string GetConvertedString(List<SubtitleData> subtitleData)
         {
-            throw new NotImplementedException();
-        }
+			string outputString = "";
+
+			for (int i = 0; i < subtitleData.Count; i++)
+			{
+				outputString += (i + 1); //subtitle num
+				outputString += "\n";
+				outputString += GetTimeString(subtitleData[i]);
+				outputString += "\n";
+				outputString += subtitleData[i].subtitleContent;
+				outputString += "\n";
+				outputString += "\n";
+			}
+
+			return outputString;
+		}
 
         public static bool Check(ref StreamReader reader)
         {
-            reader.DiscardBufferedData();
             for (int i = 0; i < 1;i++)
             {
                 try
@@ -81,7 +92,7 @@ namespace DotnetSubtitleConverter.Subtitles
             outputString += subtitleData.startMinute < 10 ? ("0" + subtitleData.startMinute.ToString()) : subtitleData.startMinute;
             outputString += ":";
             outputString += subtitleData.startSecond < 10 ? ("0" + subtitleData.startSecond.ToString()) : subtitleData.startSecond;
-            outputString = ",";
+            outputString += ",";
             outputString += subtitleData.startMicrosecond < 10 ? ("0" + subtitleData.startMicrosecond.ToString()) : subtitleData.startMicrosecond;
 
             // "arrow"
@@ -93,7 +104,7 @@ namespace DotnetSubtitleConverter.Subtitles
             outputString += subtitleData.endMinute < 10 ? ("0" + subtitleData.endMinute.ToString()) : subtitleData.endMinute;
             outputString += ":";
             outputString += subtitleData.endSecond < 10 ? ("0" + subtitleData.endSecond.ToString()) : subtitleData.endSecond;
-            outputString = ",";
+            outputString += ",";
             outputString += subtitleData.endMicrosecond < 10 ? ("0" + subtitleData.endMicrosecond.ToString()) : subtitleData.endMicrosecond;
 
             return outputString;
@@ -103,6 +114,8 @@ namespace DotnetSubtitleConverter.Subtitles
         private static bool ReadNum(ref StreamReader reader)
         {
             string? rawNum = reader.ReadLine();
+            Debug.Print(rawNum);
+            Debug.Print(rawNum.Length.ToString());
             int convertedInt = 0;
 
             if(rawNum == null)

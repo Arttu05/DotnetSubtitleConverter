@@ -14,8 +14,6 @@ namespace DotnetSubtitleConverter.Subtitles
         {
 			List<SubtitleData> outputList = new List<SubtitleData>();
 
-			reader.DiscardBufferedData(); // goes to begining of stream
-
 			reader.ReadLine(); // TODO validate WEBVTT string
 			reader.ReadLine();
 
@@ -57,9 +55,6 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		public static bool Check(ref StreamReader reader)
 		{
-			reader.BaseStream.Seek(0, SeekOrigin.Begin);
-			reader.DiscardBufferedData();
-
 			string temp = reader.ReadLine();
 			temp = reader.ReadLine();
 
