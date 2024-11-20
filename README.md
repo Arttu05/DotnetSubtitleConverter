@@ -7,8 +7,8 @@ Simple class library, that can be used to convert subtitle files to other subtit
 
 # Usage
 ```
-string output = SubtitleConverter.ConvertTo(example_VTT_file_path, SubtitleConverter.SubtitleType.VTT)
-StreamWriter sw = new StreamWriter(output_path);
+string output = SubtitleConverter.ConvertTo(example_SRT_file_path, SubtitleConverter.SubtitleType.VTT)
+StreamWriter sw = new StreamWriter(output_vtt_path);
 sw.WriteLine(output);
 sw.Close();
 ```
