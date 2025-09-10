@@ -9,15 +9,9 @@ namespace DotnetSubtitleConverter
 	internal class SubtitleData
 	{
 		//start
-		public int startHour = 0;
-		public int startMinute = 0;
-		public int startSecond = 0;
-		public int startMicrosecond;
+		public int startInMillis;
 		//end
-		public int endHour = 0;
-		public int endMinute = 0;
-		public int endSecond = 0;
-		public int endMicrosecond;
+		public int endInMillis;
 		//content
 		public string subtitleContent;
 

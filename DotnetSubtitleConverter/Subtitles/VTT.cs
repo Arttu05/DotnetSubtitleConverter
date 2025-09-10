@@ -63,7 +63,7 @@ namespace DotnetSubtitleConverter.Subtitles
 				try
 				{
 					int[] tempArr = ReadTimeString(ref reader);
-					SubtitleData tempClass = new SubtitleData();
+					SubtitleData tempClass = new();
 					SetTimeArrayToClass(tempArr, ref tempClass);
 
 					GetSubtitleContent(ref reader);
@@ -82,28 +82,50 @@ namespace DotnetSubtitleConverter.Subtitles
         //example output "00:00:00,000 --> 00:00:10,210"
         private static string GetTimeString(SubtitleData subtitleData)
 		{
+			int startMillisAfterDivide = subtitleData.startInMillis;
+
+			int startHour = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.hourInMillis);
+			startMillisAfterDivide -= (startHour * CommonUtils.hourInMillis);
+
+			int startMinute = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.MinInMillis);
+			startMillisAfterDivide -= (startMinute * CommonUtils.MinInMillis);
+
+			int startSecond = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.SecInMillis);
+			startMillisAfterDivide -= startSecond * CommonUtils.SecInMillis;
+
 			// https://www.w3.org/TR/webvtt1/#file-structure
 			string outputString = "";
 			// start timestamp
-			outputString += subtitleData.startHour;
+			outputString += CommonUtils.GetStringFromTime(startHour);
 			outputString += ":";
-			outputString += subtitleData.startMinute;
+			outputString += CommonUtils.GetStringFromTime(startMinute);
 			outputString += ":";
-			outputString += subtitleData.startSecond;
+			outputString += CommonUtils.GetStringFromTime(startSecond);
 			outputString += ".";
-			outputString += subtitleData.startMicrosecond;
+			outputString += CommonUtils.GetStringFromTime(startMillisAfterDivide);
 
 			// "arrow"
 			outputString += " --> ";
 
+			int endMillisAfterDivide = subtitleData.startInMillis;
+
+			int endHour = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.hourInMillis);
+			endMillisAfterDivide -= (startHour * CommonUtils.hourInMillis);
+
+			int endMinute = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.MinInMillis);
+			endMillisAfterDivide -= (startMinute * CommonUtils.MinInMillis);
+
+			int endSecond = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.SecInMillis);
+			endMillisAfterDivide -= startSecond * CommonUtils.SecInMillis;
+
 			//end timestamp
-			outputString += subtitleData.endHour;
+			outputString += CommonUtils.GetStringFromTime(endHour);
 			outputString += ":";
-			outputString += subtitleData.endMinute;
+			outputString += CommonUtils.GetStringFromTime(endMinute);
 			outputString += ":";
-			outputString += subtitleData.endSecond;
+			outputString += CommonUtils.GetStringFromTime(endSecond);
 			outputString += ".";
-			outputString += subtitleData.endMicrosecond;
+			outputString += CommonUtils.GetStringFromTime(endMillisAfterDivide);
 
 			return outputString;
 		}
