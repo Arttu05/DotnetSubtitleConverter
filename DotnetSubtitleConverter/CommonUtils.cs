@@ -16,7 +16,7 @@ namespace DotnetSubtitleConverter
 		public static int GetIntFromDividedInt(int from, int divide)
 		{
 
-			if(from > divide)
+			if(from < divide)
 			{
 				return 0;
 			}
@@ -47,6 +47,30 @@ namespace DotnetSubtitleConverter
 
 			return returnVal;
 
+		}
+
+		/// <summary>
+		/// Returns millisecond string for example milliseconds 2 would return "002"
+		/// </summary>
+		/// <param name="milliseconds"></param>
+		/// <returns></returns>
+		public static string GetMillisecondString(int milliseconds)
+		{
+			if (milliseconds > 99)
+			{
+				return milliseconds.ToString();
+			}
+
+			string milliInString = "0";
+
+			if (milliseconds <= 9)
+			{
+				milliInString += "0";
+			}
+
+			milliInString += milliseconds.ToString();
+
+			return milliInString;
 		}
 
 		public static int GetMillisFromTime(int hours, int minutes, int seconds, int milliseconds)

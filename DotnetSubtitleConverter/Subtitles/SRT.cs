@@ -104,7 +104,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			outputString += ":";
 			outputString += CommonUtils.GetStringFromTime(startSecond);
 			outputString += ",";
-			outputString += CommonUtils.GetStringFromTime(startMillisAfterDivide);
+			outputString += CommonUtils.GetMillisecondString(startMillisAfterDivide);
 
 			// "arrow"
 			outputString += " --> ";
@@ -127,7 +127,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			outputString += ":";
 			outputString += CommonUtils.GetStringFromTime(endSecond);
 			outputString += ",";
-			outputString += CommonUtils.GetStringFromTime(endMillisAfterDivide);
+			outputString += CommonUtils.GetMillisecondString(endMillisAfterDivide);
 
 			return outputString;
 		}
@@ -156,7 +156,7 @@ namespace DotnetSubtitleConverter.Subtitles
         // [4-7] end times      h m s ms
         private static int[] ReadTimeString(ref StreamReader reader)
         {
-            string regexPattern = "^\\d{1,3}:\\d{1,2}:\\d{1,2}.\\d{3} --> \\d{1,3}:\\d{1,2}:\\d{1,2}.\\d{3}";
+            string regexPattern = "^\\d{2}:\\d{2}:\\d{2}.\\d{3} --> \\d{2}:\\d{2}:\\d{2}.\\d{3}";
 			string? rawTimeString = reader.ReadLine();
             if(rawTimeString == null)
             {
