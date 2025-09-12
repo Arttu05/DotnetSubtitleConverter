@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetSubtitleConverter", "DotnetSubtitleConverter\DotnetSubtitleConverter.csproj", "{CCDC4AAA-02B5-4EB4-9B2C-BC45BDC898BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NunitTests", "Tests\NunitTests.csproj", "{F9E9ADC6-3D27-451B-9542-C36D1CEA6027}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{F9E9ADC6-3D27-451B-9542-C36D1CEA6027}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
