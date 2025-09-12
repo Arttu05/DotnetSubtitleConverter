@@ -84,31 +84,53 @@ namespace DotnetSubtitleConverter.Subtitles
         //example output "00:00:00,000 --> 00:00:10,210"
         private static string GetTimeString(SubtitleData subtitleData)
         {
-            // https://www.w3.org/TR/webvtt1/#file-structure
-            string outputString = "";
-            // start timestamp
-            outputString += subtitleData.startHour < 10 ? ("0" + subtitleData.startHour.ToString()) : subtitleData.startHour;
-            outputString += ":";
-            outputString += subtitleData.startMinute < 10 ? ("0" + subtitleData.startMinute.ToString()) : subtitleData.startMinute;
-            outputString += ":";
-            outputString += subtitleData.startSecond < 10 ? ("0" + subtitleData.startSecond.ToString()) : subtitleData.startSecond;
-            outputString += ",";
-            outputString += subtitleData.startMicrosecond < 10 ? ("0" + subtitleData.startMicrosecond.ToString()) : subtitleData.startMicrosecond;
+			// https://www.w3.org/TR/webvtt1/#file-structure
+			int startMillisAfterDivide = subtitleData.startInMillis;
 
-            // "arrow"
-            outputString += " --> ";
+			int startHour = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.hourInMillis);
+			startMillisAfterDivide -= (startHour * CommonUtils.hourInMillis);
 
-            //end timestamp
-            outputString += subtitleData.endHour < 10 ? ("0" + subtitleData.endHour.ToString()) : subtitleData.endHour;
-            outputString += ":";
-            outputString += subtitleData.endMinute < 10 ? ("0" + subtitleData.endMinute.ToString()) : subtitleData.endMinute;
-            outputString += ":";
-            outputString += subtitleData.endSecond < 10 ? ("0" + subtitleData.endSecond.ToString()) : subtitleData.endSecond;
-            outputString += ",";
-            outputString += subtitleData.endMicrosecond < 10 ? ("0" + subtitleData.endMicrosecond.ToString()) : subtitleData.endMicrosecond;
+			int startMinute = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.MinInMillis);
+			startMillisAfterDivide -= (startMinute * CommonUtils.MinInMillis);
 
-            return outputString;
-        }
+			int startSecond = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.SecInMillis);
+			startMillisAfterDivide -= startSecond * CommonUtils.SecInMillis;
+
+			string outputString = "";
+			// start timestamp
+			outputString += CommonUtils.GetStringFromTime(startHour);
+			outputString += ":";
+			outputString += CommonUtils.GetStringFromTime(startMinute);
+			outputString += ":";
+			outputString += CommonUtils.GetStringFromTime(startSecond);
+			outputString += ",";
+			outputString += CommonUtils.GetStringFromTime(startMillisAfterDivide);
+
+			// "arrow"
+			outputString += " --> ";
+
+			int endMillisAfterDivide = subtitleData.startInMillis;
+
+			int endHour = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.hourInMillis);
+			endMillisAfterDivide -= (startHour * CommonUtils.hourInMillis);
+
+			int endMinute = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.MinInMillis);
+			endMillisAfterDivide -= (startMinute * CommonUtils.MinInMillis);
+
+			int endSecond = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.SecInMillis);
+			endMillisAfterDivide -= startSecond * CommonUtils.SecInMillis;
+
+			//end timestamp
+			outputString += CommonUtils.GetStringFromTime(endHour);
+			outputString += ":";
+			outputString += CommonUtils.GetStringFromTime(endMinute);
+			outputString += ":";
+			outputString += CommonUtils.GetStringFromTime(endSecond);
+			outputString += ",";
+			outputString += CommonUtils.GetStringFromTime(endMillisAfterDivide);
+
+			return outputString;
+		}
 
 
         private static bool ReadNum(ref StreamReader reader)
@@ -172,19 +194,24 @@ namespace DotnetSubtitleConverter.Subtitles
             return new string(chars);
         }
 
-        private static void SetTimeArrayToClass(int[] timeArray, ref SubtitleData subtitleData)
-        {
-            subtitleData.startHour = timeArray[0];
-            subtitleData.startMinute = timeArray[1];
+		private static void SetTimeArrayToClass(int[] timeArray, ref SubtitleData subtitleData)
+		{
+			/*
+			subtitleData.startHour = timeArray[0];
+			subtitleData.startMinute = timeArray[1];
 			subtitleData.startSecond = timeArray[2];
 			subtitleData.startMicrosecond = timeArray[3];
-            subtitleData.endHour = timeArray[4];
+			subtitleData.endHour = timeArray[4];
 			subtitleData.endMinute = timeArray[5];
-            subtitleData.endSecond = timeArray[6];
+			subtitleData.endSecond = timeArray[6];
 			subtitleData.endMicrosecond = timeArray[7];
+			*/
+
+			subtitleData.startInMillis = CommonUtils.GetMillisFromTime(timeArray[0], timeArray[1], timeArray[2], timeArray[3]);
+			subtitleData.endInMillis = CommonUtils.GetMillisFromTime(timeArray[4], timeArray[5], timeArray[6], timeArray[7]);
 		}
 
-        private static string GetSubtitleContent(ref StreamReader reader)
+		private static string GetSubtitleContent(ref StreamReader reader)
         {
             string outputString = reader.ReadLine() ?? throw new NullReferenceException();
             string? currentLine = reader.ReadLine();

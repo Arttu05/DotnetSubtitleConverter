@@ -48,5 +48,19 @@ namespace DotnetSubtitleConverter
 			return returnVal;
 
 		}
+
+		public static int GetMillisFromTime(int hours, int minutes, int seconds, int milliseconds)
+		{
+			int timeInMillis = 0;
+
+			timeInMillis += milliseconds;
+
+
+			timeInMillis += seconds * CommonUtils.SecInMillis;
+			timeInMillis += minutes * CommonUtils.MinInMillis;
+			timeInMillis += hours * CommonUtils.hourInMillis;
+
+			return timeInMillis;
+		}
 	}
 }

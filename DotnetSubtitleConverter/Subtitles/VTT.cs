@@ -172,6 +172,7 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		private static void SetTimeArrayToClass(int[] timeArray, ref SubtitleData subtitleData)
 		{
+			/*
 			subtitleData.startHour = timeArray[0];
 			subtitleData.startMinute = timeArray[1];
 			subtitleData.startSecond = timeArray[2];
@@ -180,6 +181,10 @@ namespace DotnetSubtitleConverter.Subtitles
 			subtitleData.endMinute = timeArray[5];
 			subtitleData.endSecond = timeArray[6];
 			subtitleData.endMicrosecond = timeArray[7];
+			*/
+
+			subtitleData.startInMillis = CommonUtils.GetMillisFromTime(timeArray[0], timeArray[1] , timeArray[2] , timeArray[3]);
+			subtitleData.endInMillis = CommonUtils.GetMillisFromTime(timeArray[4], timeArray[5] , timeArray[6] , timeArray[7]);
 		}
 
 		private static string GetSubtitleContent(ref StreamReader reader)
