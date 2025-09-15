@@ -35,7 +35,7 @@ namespace DotnetSubtitleConverter
 
 		}	
 
-		public static string GetStringFromTime(int time)
+		public static string GetTwoDigitStringFromInt(int time)
 		{
 			if(time > 9)
 			{
@@ -54,7 +54,7 @@ namespace DotnetSubtitleConverter
 		/// </summary>
 		/// <param name="milliseconds"></param>
 		/// <returns></returns>
-		public static string GetMillisecondString(int milliseconds)
+		public static string GetThreeDigitStringFromInt(int milliseconds)
 		{
 			if (milliseconds > 99)
 			{

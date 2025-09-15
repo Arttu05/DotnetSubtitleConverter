@@ -98,13 +98,13 @@ namespace DotnetSubtitleConverter.Subtitles
 
 			string outputString = "";
 			// start timestamp
-			outputString += CommonUtils.GetStringFromTime(startHour);
+			outputString += CommonUtils.GetTwoDigitStringFromInt(startHour);
 			outputString += ":";
-			outputString += CommonUtils.GetStringFromTime(startMinute);
+			outputString += CommonUtils.GetTwoDigitStringFromInt(startMinute);
 			outputString += ":";
-			outputString += CommonUtils.GetStringFromTime(startSecond);
+			outputString += CommonUtils.GetTwoDigitStringFromInt(startSecond);
 			outputString += ",";
-			outputString += CommonUtils.GetMillisecondString(startMillisAfterDivide);
+			outputString += CommonUtils.GetThreeDigitStringFromInt(startMillisAfterDivide);
 
 			// "arrow"
 			outputString += " --> ";
@@ -121,13 +121,13 @@ namespace DotnetSubtitleConverter.Subtitles
 			endMillisAfterDivide -= startSecond * CommonUtils.SecInMillis;
 
 			//end timestamp
-			outputString += CommonUtils.GetStringFromTime(endHour);
+			outputString += CommonUtils.GetTwoDigitStringFromInt(endHour);
 			outputString += ":";
-			outputString += CommonUtils.GetStringFromTime(endMinute);
+			outputString += CommonUtils.GetTwoDigitStringFromInt(endMinute);
 			outputString += ":";
-			outputString += CommonUtils.GetStringFromTime(endSecond);
+			outputString += CommonUtils.GetTwoDigitStringFromInt(endSecond);
 			outputString += ",";
-			outputString += CommonUtils.GetMillisecondString(endMillisAfterDivide);
+			outputString += CommonUtils.GetThreeDigitStringFromInt(endMillisAfterDivide);
 
 			return outputString;
 		}
