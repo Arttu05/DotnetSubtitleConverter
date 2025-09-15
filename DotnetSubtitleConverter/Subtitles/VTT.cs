@@ -80,7 +80,7 @@ namespace DotnetSubtitleConverter.Subtitles
 
 
         //example output "00:00:00,000 --> 00:00:10,210"
-        private static string GetTimeString(SubtitleData subtitleData)
+        internal static string GetTimeString(SubtitleData subtitleData)
 		{
 			int startMillisAfterDivide = subtitleData.startInMillis;
 
@@ -130,7 +130,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			return outputString;
 		}
 
-		private static int[] ReadTimeString(ref StreamReader reader)
+		internal static int[] ReadTimeString(ref StreamReader reader)
 		{
 			string regexPattern = "^\\d{2}:\\d{2}:\\d{2}.\\d{3} --> \\d{2}:\\d{2}:\\d{2}.\\d{3}";
 			string? rawTimeString = reader.ReadLine();
@@ -147,7 +147,7 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		}
 
-		private static int[] GetTimeArray(string validTimeString) // should ONLY be used with valitated string
+		internal static int[] GetTimeArray(string validTimeString) // should ONLY be used with valitated string
 		{
 			int[] timeArray = new int[8];
 
@@ -165,12 +165,12 @@ namespace DotnetSubtitleConverter.Subtitles
 			return timeArray;
 		}
 
-		private static string CombineChars(char[] chars)
+		internal static string CombineChars(char[] chars)
 		{
 			return new string(chars);
 		}
 
-		private static void SetTimeArrayToClass(int[] timeArray, ref SubtitleData subtitleData)
+		internal static void SetTimeArrayToClass(int[] timeArray, ref SubtitleData subtitleData)
 		{
 			/*
 			subtitleData.startHour = timeArray[0];
@@ -187,7 +187,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			subtitleData.endInMillis = CommonUtils.GetMillisFromTime(timeArray[4], timeArray[5] , timeArray[6] , timeArray[7]);
 		}
 
-		private static string GetSubtitleContent(ref StreamReader reader)
+		internal static string GetSubtitleContent(ref StreamReader reader)
 		{
 			string outputString = reader.ReadLine() ?? throw new NullReferenceException();
 			string? currentLine = reader.ReadLine();
