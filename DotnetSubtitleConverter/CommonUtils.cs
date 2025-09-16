@@ -86,5 +86,50 @@ namespace DotnetSubtitleConverter
 
 			return timeInMillis;
 		}
+
+
+		public static void GetSubtitleDataWithOffset(List<SubtitleData> subtitledataList, int msOffset, bool returnOnOverflow = false)
+		{
+			if(msOffset == 0)
+			{
+				return;
+			}
+
+			foreach (SubtitleData subtitledata in subtitledataList)
+			{
+
+				if(subtitledata.startInMillis + msOffset < 0)
+				{
+					if (returnOnOverflow)
+					{
+						throw new Exception("TODO add err");
+					}
+
+					subtitledata.startInMillis = 0;
+				}
+				else
+				{
+					subtitledata.startInMillis += msOffset;
+				}
+
+				if(subtitledata.endInMillis + msOffset < 0)
+				{
+					if (returnOnOverflow)
+					{
+						throw new Exception("TODO add err");
+					}
+
+					subtitledata.endInMillis = 0;
+				}
+				else
+				{
+					subtitledata.endInMillis += msOffset;
+				}
+
+			}
+
+			return;
+
+		}
 	}
 }

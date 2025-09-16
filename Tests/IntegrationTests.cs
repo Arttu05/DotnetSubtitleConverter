@@ -7,6 +7,7 @@ namespace IntegrationTests
 		const string SRT_TO_VTT_PATH = "./SRT_To_VTT.vtt";
 		const string VTT_FILE = "./VTT_example.vtt";
 		const string VTT_TO_SRT_PATH = "./VTT_To_SRT.srt";
+		const string VTT_TO_SRT_WITH_OFFSET_PATH = "./VTT_To_SRT_With_Offset.srt";
 
 		[OneTimeSetUp]
 		public void Setup()
@@ -46,6 +47,15 @@ namespace IntegrationTests
 		{
 			string output = SubtitleConverter.ConvertTo(VTT_FILE, SubtitleConverter.SubtitleType.SRT);
 			StreamWriter sw = new StreamWriter(VTT_TO_SRT_PATH);
+			sw.WriteLine(output);
+			sw.Close();
+			Assert.Pass();
+		}
+		[Test]
+		public void VTT_To_SRT_WithOffset()
+		{
+			string output = SubtitleConverter.ConvertTo(VTT_FILE, SubtitleConverter.SubtitleType.SRT,100000);
+			StreamWriter sw = new StreamWriter(VTT_TO_SRT_WITH_OFFSET_PATH);
 			sw.WriteLine(output);
 			sw.Close();
 			Assert.Pass();

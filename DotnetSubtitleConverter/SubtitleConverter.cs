@@ -17,9 +17,11 @@ namespace DotnetSubtitleConverter
 		/// </summary>
 		/// <param name="filePath">path to the subtitle file</param>
 		/// <param name="subtitleType">Output format.</param>
-		/// <returns></returns>
+		/// <param name="msOffset">Offsets subtitles timestamps in milliseconds. Value can be negative. </param>
+		/// <param name="returnOnOffsetOverflow"> Throws exception if offset makes start and/or end timestamp below 0</param>
+		/// <returns>Desired subtitle type as a string</returns>
 		/// <exception cref="FileNotFoundException"></exception>
-		public static string ConvertTo(string filePath, SubtitleType subtitleType)
+		public static string ConvertTo(string filePath, SubtitleType subtitleType, int msOffset = 0, bool returnOnOffsetOverflow = false)
 		{
 			if (File.Exists(filePath) == false)
 			{
@@ -41,6 +43,8 @@ namespace DotnetSubtitleConverter
 					break;
 			}
 			fileStream.Close();
+
+			CommonUtils.GetSubtitleDataWithOffset(subtitleData, msOffset, returnOnOffsetOverflow);
 
 			string outputString = "";
 			switch (subtitleType)
