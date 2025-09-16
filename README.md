@@ -16,6 +16,16 @@ sw.Close();
 
 SubtitleConverter.SubtitleType is enum, that contains all of the subtitle types (that are supported). 
 
+## TODO
+
+- [ ] more subtitle types
+- [x] offset feature
+- [ ] integration tests should verify outputs.
+- [ ] more unit tests 
+- [ ] user-defined exceptions
+- [ ] nuget package
+- [ ] cd pipeline
+
 ## How to contribute
 
 ### Adding new subtitle type
