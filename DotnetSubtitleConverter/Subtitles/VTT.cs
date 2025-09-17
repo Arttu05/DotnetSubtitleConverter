@@ -136,11 +136,11 @@ namespace DotnetSubtitleConverter.Subtitles
 			string? rawTimeString = reader.ReadLine();
 			if (rawTimeString == null)
 			{
-				throw new NullReferenceException();
+				throw new InvalidSubtitleException("found null, expected timestamp");
 			}
 			if (Regex.Match(rawTimeString, regexPattern).Success == false)
 			{
-				throw new Exception("SRT timestamp is incorrect");
+				throw new InvalidSubtitleException("VTT timestamp is incorrect");
 			}
 
 			return GetTimeArray(rawTimeString);
@@ -189,7 +189,7 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		internal static string GetSubtitleContent(ref StreamReader reader)
 		{
-			string outputString = reader.ReadLine() ?? throw new NullReferenceException();
+			string outputString = reader.ReadLine() ?? throw new InvalidSubtitleException("found null, expected subtitle content");
 			string? currentLine = reader.ReadLine();
 			while (currentLine != null && currentLine != "")
 			{

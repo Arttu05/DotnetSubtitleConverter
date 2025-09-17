@@ -102,7 +102,7 @@ namespace DotnetSubtitleConverter
 				{
 					if (returnOnOverflow)
 					{
-						throw new Exception("TODO add err");
+						throw new OffsetOverFlowException("timestamp goes to negative after offset");
 					}
 
 					subtitledata.startInMillis = 0;
@@ -116,7 +116,7 @@ namespace DotnetSubtitleConverter
 				{
 					if (returnOnOverflow)
 					{
-						throw new Exception("TODO add err");
+						throw new OffsetOverFlowException("timestamp goes to negative after offset");
 					}
 
 					subtitledata.endInMillis = 0;

@@ -13,7 +13,7 @@ namespace DotnetSubtitleConverter
 		}
 
 		/// <summary>
-		/// Used to convert subtitle file to another format. 
+		/// Used to convert subtitle file to another format. Throws "InvalidSubtitleException" if given subtitle is not in a supported format.
 		/// </summary>
 		/// <param name="filePath">path to the subtitle file</param>
 		/// <param name="subtitleType">Output format.</param>
@@ -21,6 +21,8 @@ namespace DotnetSubtitleConverter
 		/// <param name="returnOnOffsetOverflow"> Throws exception if offset makes start and/or end timestamp below 0</param>
 		/// <returns>Desired subtitle type as a string</returns>
 		/// <exception cref="FileNotFoundException"></exception>
+		/// <exception cref="InvalidSubtitleException"></exception>
+		/// <exception cref="OffsetOverFlowException"></exception>
 		public static string ConvertTo(string filePath, SubtitleType subtitleType, int msOffset = 0, bool returnOnOffsetOverflow = false)
 		{
 			if (File.Exists(filePath) == false)
@@ -74,7 +76,7 @@ namespace DotnetSubtitleConverter
 				return SubtitleType.VTT;
 			}
 
-			throw new Exception("subtitle is not valid or not in supported format");
+			throw new InvalidSubtitleException("subtitle is not valid or not in supported format");
 		}
 
 		// private functions
