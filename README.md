@@ -22,7 +22,7 @@ SubtitleConverter.SubtitleType is enum, that contains all of the subtitle types 
 - [x] offset feature
 - [ ] integration tests should verify outputs.
 - [ ] more unit tests 
-- [ ] user-defined exceptions
+- [x] custom exceptions
 - [ ] nuget package
 - [ ] cd pipeline
 
