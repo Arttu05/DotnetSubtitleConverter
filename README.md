@@ -1,5 +1,14 @@
-# DotnetSubtitleConverter
-Simple class library, that can be used to convert subtitle files to other subtitle formats
+<h1 align="center"> 
+    DotnetSubtitleConverter 
+</h1>
+
+<p align="center">
+    Simple class library, that can be used to convert subtitle files to other subtitle formats
+</p>
+
+<p align="center">
+  <img src="./assets/Logo.png" width=250 alt="project's logo" />
+</p>
 
 ## Supported subtitle formats
 - SRT
