@@ -42,9 +42,18 @@ SubtitleConverter.SubtitleType is enum, that contains all of the subtitle types 
 1. Add the subtitle type to ```SubtitleType``` enum in ```SubtitleConverter.cs```.
 
 2. Create **public static** class in ```./DotnetSubtitleConverter/Subtitles/``` for the subtitle type and create the following public methods:
-    - GetSubtitleData()
-    - GetConvertedString()
-    - Check()
+    - ```GetSubtitleData(ref StreamReader reader)``` </br>
+          This function should parse the given file to ```List<SubtitleData>``` and then return the ```List<SubtitleData>``` .
+          ```reader``` is a StreamReader that is at the begining of the given file. </br>
+          **Returns** ```List<SubtitleData>```
+      
+    - ```GetConvertedString(List<SubtitleData> subtitleData)``` </br>
+           Creates subtitle from ```List<SubtitleData>```. </br>
+           **Returns** ```string```
+    
+    - ```Check(ref StreamReader reader)``` </br>
+          Parses the given file with ```reader```. Used by ```GetSubtitleType()``` to figure out what subtitle format the given file is. </br>
+          **Returns** ```bool```, that indicates whether the given file is valid subtitle file. 
       
     This class can and should have private helper methods, but instead of making these methods private make them internal. SubtitleConverter project has set internal functions to be visible for ```Tests``` project. This makes unit testing possible for these helper functions.
 
