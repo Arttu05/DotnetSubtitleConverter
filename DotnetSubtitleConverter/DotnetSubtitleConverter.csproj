@@ -4,8 +4,36 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<PackageId>SubtitleConverter</PackageId>
+	<Authors>Arttu Vestrerinen</Authors>
+	<PackageTags>subtitle</PackageTags>
+	<PackageProjectUrl>https://github.com/Arttu05/DotnetSubtitleConverter</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/Arttu05/DotnetSubtitleConverter</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageIconUrl>logo512x512.png</PackageIconUrl>
+	<Title>SubtitleConverter</Title>
+	<Description>Library that can convert subtitles to other subtitle formats
+and offset subtitle timings.</Description>
+	<PackageIcon>Logo512x512.png</PackageIcon>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="nuget_assets\Logo512x512.png" />
+    <EmbeddedResource Include="nuget_assets\README.md" />
+  </ItemGroup>
 	<ItemGroup>
-		<InternalsVisibleTo Include="Tests"/>
+		<InternalsVisibleTo Include="Tests" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="nuget_assets\Logo512x512.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Update="nuget_assets\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>
