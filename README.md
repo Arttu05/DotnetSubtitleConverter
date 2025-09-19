@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    Simple class library, that can be used to convert subtitle files to other subtitle formats
+    Simple class library, that can be used to convert subtitle files to other subtitle formats and offset subtitle timings
 </p>
 
 <p align="center">
@@ -24,8 +24,8 @@ Reads given file and returns the converted subtitle as a string.
 Parameters: </br>
 ```filePath```: path to the file you want to convert. </br>
 ```subtitleType```: to what format the subtitle gets converted to. </br>
-```msOffset``` <optional>: offset subtitle timings. Can be a negative number. </br>
-```returnOnOffsetOverflow``` <optional>: If true and offset makes subtitle timestamp negative, library will throw exception. While false and offset makes timestamp negative, will make the stamp 0. 
+```msOffset``` \<optional\>: offset subtitle timings in milliseconds. Can be a negative number. </br>
+```returnOnOffsetOverflow``` \<optional\>: If true and offset makes subtitle timestamp negative, library will throw exception. While false and offset makes timestamp negative, will make the stamp 0. 
 
 
 
