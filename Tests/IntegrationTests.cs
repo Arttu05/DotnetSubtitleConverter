@@ -3,11 +3,11 @@ namespace IntegrationTests
 {
 	public class SubtitleTests
 	{
-		const string SRT_FILE = "./SRT_example.srt";
-		const string SRT_TO_VTT_PATH = "./SRT_To_VTT.vtt";
-		const string VTT_FILE = "./VTT_example.vtt";
-		const string VTT_TO_SRT_PATH = "./VTT_To_SRT.srt";
-		const string VTT_TO_SRT_WITH_OFFSET_PATH = "./VTT_To_SRT_With_Offset.srt";
+		const string SRT_FILE = "./subtitle_files/SRT_example.srt";
+		const string SRT_TO_VTT_PATH = "./subtitle_files/SRT_To_VTT.vtt";
+		const string VTT_FILE = "./subtitle_files/VTT_example.vtt";
+		const string VTT_TO_SRT_PATH = "./subtitle_files/VTT_To_SRT.srt";
+		const string VTT_TO_SRT_WITH_OFFSET_PATH = "./subtitle_files/VTT_To_SRT_With_Offset.srt";
 
 		[OneTimeSetUp]
 		public void Setup()
@@ -17,6 +17,7 @@ namespace IntegrationTests
 			{
 				Assert.Fail("SRT file not found");
 			}
+
 			if (File.Exists(SRT_TO_VTT_PATH))
 			{
 				File.Delete(SRT_TO_VTT_PATH);
@@ -27,6 +28,7 @@ namespace IntegrationTests
 			{
 				Assert.Fail("VTT file not found");
 			}
+
 			if (File.Exists(VTT_TO_SRT_PATH))
 			{
 				File.Delete(VTT_TO_SRT_PATH);
@@ -37,10 +39,14 @@ namespace IntegrationTests
 		public void SRT_To_VTT()
 		{
 			string output = SubtitleConverter.ConvertTo(SRT_FILE, SubtitleConverter.SubtitleType.VTT);
-			StreamWriter sw = new StreamWriter(SRT_TO_VTT_PATH);
-			sw.WriteLine(output);
-			sw.Close();
-			Assert.Pass();
+			
+			StreamWriter outputWriter = new StreamWriter(SRT_TO_VTT_PATH);
+			outputWriter.WriteLine(output);
+			outputWriter.Close();
+
+			SubtitleConverter.SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(SRT_TO_VTT_PATH);
+			
+			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleConverter.SubtitleType.VTT));
 		}
 		[Test]
 		public void VTT_To_SRT()
@@ -49,7 +55,10 @@ namespace IntegrationTests
 			StreamWriter sw = new StreamWriter(VTT_TO_SRT_PATH);
 			sw.WriteLine(output);
 			sw.Close();
-			Assert.Pass();
+
+			SubtitleConverter.SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(VTT_TO_SRT_PATH);
+
+			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleConverter.SubtitleType.SRT));
 		}
 		[Test]
 		public void VTT_To_SRT_WithOffset()
@@ -58,7 +67,10 @@ namespace IntegrationTests
 			StreamWriter sw = new StreamWriter(VTT_TO_SRT_WITH_OFFSET_PATH);
 			sw.WriteLine(output);
 			sw.Close();
-			Assert.Pass();
+
+			SubtitleConverter.SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(VTT_TO_SRT_PATH);
+
+			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleConverter.SubtitleType.SRT));
 		}
 	}
 }
