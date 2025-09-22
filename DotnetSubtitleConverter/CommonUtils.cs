@@ -42,6 +42,11 @@ namespace DotnetSubtitleConverter
 				return time.ToString();
 			}
 
+			if (time > 99) 
+			{
+				throw new InvalidSubtitleException();
+			}
+
 			string returnVal = "0";
 			returnVal += time.ToString();
 
@@ -56,9 +61,14 @@ namespace DotnetSubtitleConverter
 		/// <returns></returns>
 		public static string GetThreeDigitStringFromInt(int milliseconds)
 		{
-			if (milliseconds > 99)
+			if (milliseconds > 99 && milliseconds <= 999)
 			{
 				return milliseconds.ToString();
+			}
+
+			if(milliseconds > 999)
+			{
+				throw new InvalidSubtitleException();
 			}
 
 			string milliInString = "0";
