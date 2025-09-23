@@ -37,15 +37,16 @@ namespace DotnetSubtitleConverter
 
 		public static string GetTwoDigitStringFromInt(int time)
 		{
+			if (time > 99) 
+			{
+				throw new InvalidSubtitleException();
+			}
+
 			if(time > 9)
 			{
 				return time.ToString();
 			}
 
-			if (time > 99) 
-			{
-				throw new InvalidSubtitleException();
-			}
 
 			string returnVal = "0";
 			returnVal += time.ToString();

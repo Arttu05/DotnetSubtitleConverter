@@ -50,8 +50,11 @@ namespace DotnetSubtitleConverter.Subtitles
 				outputString += GetTimeString(subtitleData[i]);
 				outputString += "\n";
 				outputString += subtitleData[i].subtitleContent;
-				outputString += "\n";
-				outputString += "\n";
+                if((i + 1) < subtitleData.Count)
+                {
+				    outputString += "\n";
+				    outputString += "\n";
+                }
 			}
 
 			return outputString;
@@ -109,16 +112,16 @@ namespace DotnetSubtitleConverter.Subtitles
 			// "arrow"
 			outputString += " --> ";
 
-			int endMillisAfterDivide = subtitleData.startInMillis;
+			int endMillisAfterDivide = subtitleData.endInMillis;
 
 			int endHour = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.hourInMillis);
-			endMillisAfterDivide -= (startHour * CommonUtils.hourInMillis);
+			endMillisAfterDivide -= (endHour * CommonUtils.hourInMillis);
 
 			int endMinute = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.MinInMillis);
-			endMillisAfterDivide -= (startMinute * CommonUtils.MinInMillis);
+			endMillisAfterDivide -= (endMinute * CommonUtils.MinInMillis);
 
 			int endSecond = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.SecInMillis);
-			endMillisAfterDivide -= startSecond * CommonUtils.SecInMillis;
+			endMillisAfterDivide -= endSecond * CommonUtils.SecInMillis;
 
 			//end timestamp
 			outputString += CommonUtils.GetTwoDigitStringFromInt(endHour);
