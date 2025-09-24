@@ -17,10 +17,19 @@ namespace DotnetSubtitleConverter.Subtitles
 
             while (reader.EndOfStream == false) 
             {
-                SubtitleData currentSubtitleData = new SubtitleData(); 
-                
-                // validates the subtitle num
-                if(ReadNum(ref reader) == false) 
+                SubtitleData currentSubtitleData = new SubtitleData();
+
+                string? expectedNumLine = reader.ReadLine();
+
+                //If after subtitle content there is extra whitespaces or at the end of the file there is
+                //extra empty rows, will ignore the empty rows
+                if(expectedNumLine == null || expectedNumLine == "\n" || expectedNumLine == "")
+                {
+                    continue;
+                }
+
+				// validates the subtitle num
+				if (ReadNum(expectedNumLine) == false) 
                 {
                     throw new InvalidSubtitleException("SRT: Expected number");
                 }
@@ -62,13 +71,24 @@ namespace DotnetSubtitleConverter.Subtitles
 
         public static bool Check(ref StreamReader reader)
         {
-            for (int i = 0; i < 1;i++)
+            while(reader.EndOfStream == false)
             {
                 try
                 {
-                    ReadNum(ref reader);
+					string? expectedNumLine = reader.ReadLine();
 
-                    int[] tempArr = ReadTimeString(ref reader);
+					if (expectedNumLine == null || expectedNumLine == "\n" || expectedNumLine == "")
+					{
+						continue;
+					}
+
+					// validates the subtitle num
+					if (ReadNum(expectedNumLine) == false)
+					{
+						throw new InvalidSubtitleException("SRT: Expected number");
+					}
+
+					int[] tempArr = ReadTimeString(ref reader);
                     SubtitleData tempClass = new SubtitleData();
                     SetTimeArrayToClass(tempArr, ref tempClass);
 
@@ -136,11 +156,9 @@ namespace DotnetSubtitleConverter.Subtitles
 		}
 
 
-        internal static bool ReadNum(ref StreamReader reader)
+        internal static bool ReadNum(string? rawNum)
         {
-            string? rawNum = reader.ReadLine();
-            Debug.Print(rawNum);
-            Debug.Print(rawNum.Length.ToString());
+
             int convertedInt = 0;
 
             if(rawNum == null)

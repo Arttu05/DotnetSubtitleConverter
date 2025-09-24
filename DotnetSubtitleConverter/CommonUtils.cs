@@ -22,7 +22,7 @@ namespace DotnetSubtitleConverter
 			}
 
 			int i = 0;
-			while (from > divide)
+			while (from >= divide)
 			{
 
 				from -= divide;

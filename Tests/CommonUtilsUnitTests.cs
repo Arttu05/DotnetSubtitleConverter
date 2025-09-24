@@ -97,7 +97,7 @@ namespace UnitTests
 
 			CommonUtils.GetSubtitleDataWithOffset(subtitleDatasWithOffset, offset);
 
-			Assert.That(0, Is.EqualTo(subtitleDatasWithOffset[0].startInMillis));
+			Assert.That(subtitleDatasWithOffset[0].startInMillis, Is.EqualTo(0));
 			Assert.That(subtitleDatas[0].endInMillis + offset, Is.EqualTo(subtitleDatasWithOffset[0].endInMillis));
 		}
 
