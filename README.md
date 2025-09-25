@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="./assets/Logo.png" width=250 alt="project's logo" />
+  <img src="./assets/Logo.jpg" width=250 alt="project's logo" />
 </p>
 
 ## Supported subtitle formats
