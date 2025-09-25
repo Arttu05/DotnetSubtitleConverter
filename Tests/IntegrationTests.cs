@@ -72,5 +72,35 @@ namespace IntegrationTests
 			}
 
 		}
+
+		[Test]
+		public void Check_VTT_WithPositions()
+		{
+			SubtitleConverter.SubtitleType outputType = SubtitleConverter.GetSubtitleType(Consts.VTT_EXAMPLE_WITH_POSITION);
+
+			Assert.That(outputType, Is.EqualTo(SubtitleConverter.SubtitleType.VTT));
+
+			StreamReader sr = new(Consts.VTT_EXAMPLE_WITH_POSITION);
+
+			List<SubtitleData> subtitleDatas = DotnetSubtitleConverter.Subtitles.VTT.GetSubtitleData(ref sr);
+
+			Assert.That(subtitleDatas.Count, Is.EqualTo(3));
+
+		}
+
+		[Test]
+		public void Check_VTT_WithRegion()
+		{
+			SubtitleConverter.SubtitleType outputType = SubtitleConverter.GetSubtitleType(Consts.VTT_EXAMPLE_WITH_REGION);
+
+			Assert.That(outputType, Is.EqualTo(SubtitleConverter.SubtitleType.VTT));
+
+			StreamReader sr = new(Consts.VTT_EXAMPLE_WITH_REGION);
+
+			List<SubtitleData> subtitleDatas = DotnetSubtitleConverter.Subtitles.VTT.GetSubtitleData(ref sr);
+
+			Assert.That(subtitleDatas.Count, Is.EqualTo(6));
+		}
+
 	}
 }

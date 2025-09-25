@@ -22,7 +22,20 @@ namespace DotnetSubtitleConverter.Subtitles
 				SubtitleData currentSubtitleData = new SubtitleData();
 
 				// start and end timestamps
-				int[] timeArray = ReadTimeString(ref reader);
+
+				string? expectedTimeString = reader.ReadLine();
+
+				int[] timeArray;
+
+				try
+				{
+					timeArray = ReadTimeString(expectedTimeString);
+				}
+				catch (InvalidSubtitleException)
+				{
+					continue;
+				}
+
 				SetTimeArrayToClass(timeArray, ref currentSubtitleData);
 
 				//reading subtitle content
@@ -65,7 +78,19 @@ namespace DotnetSubtitleConverter.Subtitles
 			{
 				try
 				{
-					int[] tempArr = ReadTimeString(ref reader);
+					string? expectedTimeString = reader.ReadLine();
+
+					int[] tempArr;
+
+					try
+					{
+						tempArr = ReadTimeString(expectedTimeString);
+					}
+					catch (InvalidSubtitleException)
+					{
+						continue;
+					}
+
 					SubtitleData tempClass = new();
 					SetTimeArrayToClass(tempArr, ref tempClass);
 
@@ -133,10 +158,9 @@ namespace DotnetSubtitleConverter.Subtitles
 			return outputString;
 		}
 
-		internal static int[] ReadTimeString(ref StreamReader reader)
+		internal static int[] ReadTimeString(string? rawTimeString)
 		{
 			string regexPattern = "^\\d{2}:\\d{2}:\\d{2}.\\d{3} --> \\d{2}:\\d{2}:\\d{2}.\\d{3}";
-			string? rawTimeString = reader.ReadLine();
 			if (rawTimeString == null)
 			{
 				throw new InvalidSubtitleException("found null, expected timestamp");
