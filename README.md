@@ -14,6 +14,23 @@
 - SRT
 - VTT
 
+## How to add to your project
+
+1. Clone this repository.
+2. build with following command ```dotnet build --configuration release```, while your working directory is in this project's root. 
+3. Now you should find the .dll file from ```./DotnetSubtitleConverter/bin/Release/net8.0/DotnetSubtitleConverter.dll```. Copy the path of the dll
+4. Add reference to the dll
+   - With visual studio: [follow this instruction from stackoverflow](https://stackoverflow.com/a/65017892)
+   - manually:
+     Add the following string to your projetc's ```.csproj``` file and replace the path with your path </br>
+     ```
+          <ItemGroup>
+            <Reference Include="DotnetSubtitleConverter">
+              <HintPath>./your/path/to/the/dll</HintPath>
+            </Reference>
+          </ItemGroup>
+     ```
+
 ## Usage
 
 ```SubtitleConverter``` library offers following functions: 
@@ -46,6 +63,11 @@ Returns the type of the given subtitle.
 ## subtitleType
 
 SubtitleConverter.SubtitleType is enum, that contains all of the subtitle types (that are supported). 
+
+## Exceptions 
+
+- OffsetOverFlowException
+- InvalidSubtitleException
 
 ## TODO
 
