@@ -234,7 +234,14 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		internal static string GetSubtitleContent(ref StreamReader reader)
         {
-            string outputString = reader.ReadLine() ?? throw new InvalidSubtitleException("found null, expected subtitle content");
+            string firstLine = reader.ReadLine() ?? throw new InvalidSubtitleException("found null, expected subtitle content");
+            
+            if(firstLine == "" || firstLine == null)
+            {
+				throw new InvalidSubtitleException("found empty, expected subtitle content");
+			}
+            
+            string outputString = firstLine; 
             string? currentLine = reader.ReadLine();
             while(currentLine != null && currentLine != "")
             {
