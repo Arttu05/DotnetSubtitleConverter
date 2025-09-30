@@ -9,7 +9,7 @@ using Tests;
 
 namespace UnitTests
 {
-	internal class SRT_UnitTests
+	internal class VTT_UnitTests
 	{
 		[OneTimeSetUp]
 		public void setup()
@@ -18,25 +18,28 @@ namespace UnitTests
 		}
 
 		[Test]
-		public void SRT_TimestampTest()
+		public void VTT_TimestampTest()
 		{
 			try
 			{
-				StreamReader sr = new StreamReader(Consts.SRT_EXAMPLE_FILE);
-				sr.ReadLine();// skips num
+				StreamReader sr = new StreamReader(Consts.VTT_EXAMPLE_FILE);
+				sr.ReadLine();// WEBVTT
+				sr.ReadLine();// Empty line
 
-				DotnetSubtitleConverter.Subtitles.SRT.ReadTimeString(ref sr);
+				string? expectedTimeString = sr.ReadLine();
+
+				DotnetSubtitleConverter.Subtitles.VTT.ReadTimeString(expectedTimeString);
 				sr.Close();
 			}
-			catch (Exception ex) 
-			{ 
-				Assert.Fail(ex.Message); 
+			catch (Exception ex)
+			{
+				Assert.Fail(ex.Message);
 			}
 
 		}
 
 		[Test]
-		public void SRT_LineTestWith2Lines()
+		public void VTT_LineTestWith2Lines()
 		{
 			string line1 = "test";
 			string line2 = "test2";
@@ -50,14 +53,14 @@ namespace UnitTests
 
 			StreamReader sr = new StreamReader(lineToReadStream);
 
-			string outputString = SRT.GetSubtitleContent(ref sr);
+			string outputString = VTT.GetSubtitleContent(ref sr);
 
-			Assert.That(outputString,Is.EqualTo(expectedString));
+			Assert.That(outputString, Is.EqualTo(expectedString));
 
 		}
 
 		[Test]
-		public void SRT_LineTestWith1Line()
+		public void VTT_LineTestWith1Line()
 		{
 			string line1 = "test";
 			string line2 = "test2";
@@ -70,14 +73,14 @@ namespace UnitTests
 
 			StreamReader sr = new StreamReader(lineToReadStream);
 
-			string outputString = SRT.GetSubtitleContent(ref sr);
+			string outputString = VTT.GetSubtitleContent(ref sr);
 
-			Assert.That(outputString,Is.EqualTo(expectedString));
+			Assert.That(outputString, Is.EqualTo(expectedString));
 
 		}
 
 		[Test]
-		public void SRT_LineTestWithEmptyLine()
+		public void VTT_LineTestWithEmptyLine()
 		{
 			string line = "test2";
 
@@ -88,34 +91,17 @@ namespace UnitTests
 			StreamReader sr = new StreamReader(lineToReadStream);
 			try
 			{
-				string outputString = SRT.GetSubtitleContent(ref sr);
+				string outputString = VTT.GetSubtitleContent(ref sr);
 				Assert.Fail("\"GetSubtitleContent\" should have thrown exception");
 			}
-			catch (InvalidSubtitleException) 
+			catch (InvalidSubtitleException)
 			{ }
-			catch (Exception ex) 
-			{ 
+			catch (Exception ex)
+			{
 				Assert.Fail(ex.Message);
 			}
 
 
-		}
-
-
-		[Test]
-		public void SRT_ReadNumWithValidTest()
-		{
-			Assert.That(SRT.ReadNum("2"),Is.EqualTo(true));
-		}
-		[Test]
-		public void SRT_ReadNumWithInValidTest()
-		{
-			Assert.That(SRT.ReadNum("k"),Is.EqualTo(false));
-		}
-		[Test]
-		public void SRT_ReadNumWithNullTest()
-		{
-			Assert.That(SRT.ReadNum(null),Is.EqualTo(false));
 		}
 	}
 }
