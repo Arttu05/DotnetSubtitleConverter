@@ -7,7 +7,9 @@
 </p>
 
 <p align="center">
-    [![Tests](https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml/badge.svg)](https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml)
+    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml">
+        <img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml/badge.svg" alt="Tests">
+    </a>
 </p>
 
 <p align="center">
