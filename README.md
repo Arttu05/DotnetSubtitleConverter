@@ -7,6 +7,10 @@
 </p>
 
 <p align="center">
+    [![Tests](https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml/badge.svg)](https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml)
+</p>
+
+<p align="center">
   <img src="./assets/Logo.jpg" width=250 alt="project's logo" />
 </p>
 
