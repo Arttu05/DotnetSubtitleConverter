@@ -74,7 +74,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			string temp = reader.ReadLine();
 			temp = reader.ReadLine();
 
-			for (int i = 0; i < 1; i++)
+			while(reader.EndOfStream == false)
 			{
 				try
 				{

@@ -8,7 +8,11 @@ namespace Tests
 {
 	internal static class TestUtils
 	{
-
+		/// <summary>
+		/// Creates stream from string. 
+		/// </summary>
+		/// <param name="stringToStream"></param>
+		/// <returns></returns>
 		public static Stream GetStreamFromString(string stringToStream)
 		{
 			MemoryStream stream = new MemoryStream();

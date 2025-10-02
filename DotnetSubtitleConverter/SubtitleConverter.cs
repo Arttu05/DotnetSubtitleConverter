@@ -6,6 +6,9 @@ namespace DotnetSubtitleConverter
 {
 	public static class SubtitleConverter
 	{
+		/// <summary>
+		/// Subtitle formats.
+		/// </summary>
 		public enum SubtitleType
 		{
 			SRT,
@@ -14,6 +17,7 @@ namespace DotnetSubtitleConverter
 
 		/// <summary>
 		/// Used to convert subtitle file to another format. Throws "InvalidSubtitleException" if given subtitle is not in a supported format.
+		/// 
 		/// </summary>
 		/// <param name="filePath">path to the subtitle file</param>
 		/// <param name="subtitleType">Output format.</param>
@@ -63,6 +67,14 @@ namespace DotnetSubtitleConverter
 			return outputString;
 		}
 
+
+		/// <summary>
+		/// Reads subtitle file. Validates and returns the subtitle type.
+		/// If no subtitle type is found throws "InvalidSubtitleException"
+		/// </summary>
+		/// <param name="filePath">Path to the subtitle file</param>
+		/// <returns>value from "SubtitleType" enum, indicating the subtitle format</returns>
+		/// <exception cref="InvalidSubtitleException"></exception>
 		public static SubtitleType GetSubtitleType(string filePath)
 		{
 			StreamReader fileStream = GetFileStream(filePath);
