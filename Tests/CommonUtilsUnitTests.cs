@@ -180,5 +180,39 @@ namespace UnitTests
 				Assert.Fail(ex.Message);
 			}
 		}
+
+
+		[Test]
+		public void DivideIntFromMinsWithEven()
+		{
+			int expectedValue = 4;
+			int testValue = 1000 * 60 * expectedValue;
+
+			int actualValue = CommonUtils.GetIntFromDividedInt(testValue, CommonUtils.MinInMillis);
+
+			Assert.That(actualValue, Is.EqualTo(expectedValue));
+		}
+
+		[Test]
+		public void DivideIntFromMinsWithSmaller()
+		{
+			int expectedValue = 0;
+			int testValue = (1000 * 60) - 1;
+
+			int actualValue = CommonUtils.GetIntFromDividedInt(testValue, CommonUtils.MinInMillis);
+
+			Assert.That(actualValue, Is.EqualTo(expectedValue));
+		}
+
+		[Test]
+		public void DivideIntFromMinsWithUnEven()
+		{
+			int expectedValue = 1;
+			int testValue = (1000 * 60 * (expectedValue + 1)) - 1;
+
+			int actualValue = CommonUtils.GetIntFromDividedInt(testValue, CommonUtils.MinInMillis);
+
+			Assert.That(actualValue, Is.EqualTo(expectedValue));
+		}
 	}
 }
