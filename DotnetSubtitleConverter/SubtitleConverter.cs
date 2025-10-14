@@ -12,7 +12,8 @@ namespace DotnetSubtitleConverter
 		public enum SubtitleType
 		{
 			SRT,
-			VTT
+			VTT,
+			SBV
 		}
 
 		/// <summary>

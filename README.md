@@ -19,6 +19,7 @@
 ## Supported subtitle formats
 - SRT
 - VTT
+- SBV (in development)
 
 ## How to add to your project
 
