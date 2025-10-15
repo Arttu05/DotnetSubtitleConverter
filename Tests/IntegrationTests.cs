@@ -1,4 +1,5 @@
 using DotnetSubtitleConverter;
+using DotnetSubtitleConverter.Subtitles;
 using Tests;
 namespace IntegrationTests
 {
@@ -100,6 +101,36 @@ namespace IntegrationTests
 			List<SubtitleData> subtitleDatas = DotnetSubtitleConverter.Subtitles.VTT.GetSubtitleData(ref sr);
 
 			Assert.That(subtitleDatas.Count, Is.EqualTo(6));
+		}
+
+		[Test]
+		public void SBV_To_SRT()
+		{
+
+			string outputString = SubtitleConverter.ConvertTo(Consts.SBV_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SRT);
+
+			Stream streamFromString = TestUtils.GetStreamFromString(outputString);
+
+			StreamReader SRT_streamReader = new(streamFromString);
+			StreamReader SBV_streamReader = new(Consts.SBV_EXAMPLE_FILE);
+
+			List<SubtitleData> original_SBV_Data = SBV.GetSubtitleData(ref SBV_streamReader);
+			List<SubtitleData> converter_SRT_Data = SRT.GetSubtitleData(ref SRT_streamReader);
+
+			Assert.That(converter_SRT_Data.Count, Is.EqualTo(original_SBV_Data.Count));
+
+			for (int i = 0; i < original_SBV_Data.Count; i++) 
+			{
+				SubtitleData current_SBV_data = original_SBV_Data[i];
+				SubtitleData current_SRT_data = converter_SRT_Data[i];
+
+				Assert.That(current_SRT_data.startInMillis, Is.EqualTo(current_SBV_data.startInMillis));
+				Assert.That(current_SRT_data.endInMillis, Is.EqualTo(current_SBV_data.endInMillis));
+				Assert.That(current_SRT_data.subtitleContent, Is.EqualTo(current_SBV_data.subtitleContent));
+
+			}
+
+
 		}
 
 	}

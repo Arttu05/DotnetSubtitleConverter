@@ -48,6 +48,10 @@ namespace DotnetSubtitleConverter
 					fileStream = GetFileStream(filePath);
 					subtitleData = VTT.GetSubtitleData(ref fileStream);
 					break;
+				case SubtitleType.SBV:
+					fileStream = GetFileStream(filePath);
+					subtitleData = SBV.GetSubtitleData(ref fileStream);
+					break;
 			}
 			fileStream.Close();
 
@@ -87,6 +91,11 @@ namespace DotnetSubtitleConverter
 			if (VTT.Check(ref fileStream))
 			{
 				return SubtitleType.VTT;
+			}
+			fileStream = GetFileStream(filePath);
+			if (SBV.Check(ref fileStream))
+			{
+				return SubtitleType.SBV;
 			}
 
 			throw new InvalidSubtitleException("subtitle is not valid or not in supported format");

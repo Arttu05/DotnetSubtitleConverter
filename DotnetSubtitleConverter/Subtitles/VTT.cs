@@ -71,14 +71,29 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		public static bool Check(ref StreamReader reader)
 		{
-			string temp = reader.ReadLine();
-			temp = reader.ReadLine();
+			string webttvLine = reader.ReadLine();
+			if (webttvLine == null)
+			{
+				return false;
+			} 
+
+			if(webttvLine != "WEBVTT")
+			{
+				return false;
+			}
+
+			List<SubtitleData> tempDataList = new();
 
 			while(reader.EndOfStream == false)
 			{
 				try
 				{
 					string? expectedTimeString = reader.ReadLine();
+
+					if(expectedTimeString == null || expectedTimeString == "" || expectedTimeString == "\n") 
+					{
+						continue;	
+					}
 
 					int[] tempArr;
 
@@ -91,16 +106,25 @@ namespace DotnetSubtitleConverter.Subtitles
 						continue;
 					}
 
+					
+
 					SubtitleData tempClass = new();
 					SetTimeArrayToClass(tempArr, ref tempClass);
 
-					GetSubtitleContent(ref reader);
+					tempClass.subtitleContent = GetSubtitleContent(ref reader);
+
+					tempDataList.Add(tempClass);
 				}
 				catch (Exception e)
 				{
 					return false;
 				}
 
+			}
+
+			if(tempDataList.Count <= 0)
+			{
+				return false;
 			}
 
 			return true;

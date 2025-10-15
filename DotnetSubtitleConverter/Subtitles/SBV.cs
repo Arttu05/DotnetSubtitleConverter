@@ -17,7 +17,6 @@ namespace DotnetSubtitleConverter.Subtitles
 
 			while(reader.EndOfStream == false)
 			{
-
 				SubtitleData currentSubtitleData = new();
 
  				string? expectedTimestamp = reader.ReadLine();
@@ -28,12 +27,11 @@ namespace DotnetSubtitleConverter.Subtitles
 				}
 
 				currentSubtitleData = ReadTimestampString(expectedTimestamp);
+				currentSubtitleData.subtitleContent = GetSubtitleContent(ref reader);
 
-				
+				subtitleDataList.Add(currentSubtitleData);
 			}
 
-
-			throw new NotImplementedException();
 			return subtitleDataList;
 		}
 
@@ -45,8 +43,8 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		public static bool Check(ref StreamReader reader)
 		{
-			throw new NotImplementedException();
-			return false;
+			//TODO: fix check
+			return true;
 		}
 
 
@@ -67,14 +65,14 @@ namespace DotnetSubtitleConverter.Subtitles
 			int startMillisecond;
 			int endMillisecond;
 
-			if( int.TryParse(timeStampMatch.Groups[0].Value, out startHour) == false ||
-				int.TryParse(timeStampMatch.Groups[1].Value, out startMinute) == false ||
-				int.TryParse(timeStampMatch.Groups[2].Value, out startSecond) == false ||
-				int.TryParse(timeStampMatch.Groups[3].Value, out startMillisecond) == false ||
-				int.TryParse(timeStampMatch.Groups[4].Value, out endHour) == false ||
-				int.TryParse(timeStampMatch.Groups[5].Value, out endMinute) == false ||
-				int.TryParse(timeStampMatch.Groups[6].Value, out endSecond) == false ||
-				int.TryParse(timeStampMatch.Groups[7].Value, out endMillisecond) == false) 
+			if( int.TryParse(timeStampMatch.Groups[1].Value, out startHour) == false ||
+				int.TryParse(timeStampMatch.Groups[2].Value, out startMinute) == false ||
+				int.TryParse(timeStampMatch.Groups[3].Value, out startSecond) == false ||
+				int.TryParse(timeStampMatch.Groups[4].Value, out startMillisecond) == false ||
+				int.TryParse(timeStampMatch.Groups[5].Value, out endHour) == false ||
+				int.TryParse(timeStampMatch.Groups[6].Value, out endMinute) == false ||
+				int.TryParse(timeStampMatch.Groups[7].Value, out endSecond) == false ||
+				int.TryParse(timeStampMatch.Groups[8].Value, out endMillisecond) == false) 
 			{
 				throw new InvalidSubtitleException("failed to parse timestamp");
 			}
@@ -102,6 +100,31 @@ namespace DotnetSubtitleConverter.Subtitles
 			}
 
 			return regexMatch;
+		}
+
+		internal static string GetSubtitleContent(ref StreamReader reader) 
+		{ 
+			
+			string firstLine = reader.ReadLine() ?? throw new InvalidSubtitleException("found null, instead of dialog");
+
+			if (firstLine == "" || firstLine == "\n")
+			{
+				throw new InvalidSubtitleException("found empty line, instead of dialog");
+			}
+
+			string returnValue = $"{firstLine}";
+
+
+			string? possibleLine;
+			possibleLine = reader.ReadLine();
+			while( possibleLine != "" && possibleLine != null)
+			{
+				returnValue += $"\n{possibleLine}";
+				possibleLine = reader.ReadLine();
+			}
+
+
+			return returnValue;
 		}
 	}
 }
