@@ -37,14 +37,59 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		public static string GetConvertedString(List<SubtitleData> subtitleData)
 		{
-			throw new NotImplementedException();
-			return "";
+			string outputString = "";
+
+
+			foreach (SubtitleData currentData in subtitleData) 
+			{
+				outputString += $"{GetTimestampString(currentData)}\n";
+				outputString += $"{currentData.subtitleContent}\n\n";
+			}
+
+
+			if(outputString == "")
+			{
+				throw new SubtitleWritingException();
+			}
+
+			return outputString;
 		}
 
 		public static bool Check(ref StreamReader reader)
 		{
-			//TODO: fix check
-			return true;
+
+			try
+			{
+				List<SubtitleData> subtitleDataList = new List<SubtitleData>();
+
+				while (reader.EndOfStream == false)
+				{
+					SubtitleData currentSubtitleData = new();
+
+					string? expectedTimestamp = reader.ReadLine();
+
+					if (expectedTimestamp == null || expectedTimestamp == "\n" || expectedTimestamp == "")
+					{
+						continue;
+					}
+
+					currentSubtitleData = ReadTimestampString(expectedTimestamp);
+					currentSubtitleData.subtitleContent = GetSubtitleContent(ref reader);
+
+					subtitleDataList.Add(currentSubtitleData);
+				}
+
+				if (subtitleDataList.Count <= 0) 
+				{ 
+					return false;
+				}
+
+				return true;
+			}
+			catch 
+			{ 
+				return false;
+			}
 		}
 
 
@@ -125,6 +170,55 @@ namespace DotnetSubtitleConverter.Subtitles
 
 
 			return returnValue;
+		}
+
+		internal static string GetTimestampString(SubtitleData subtitleData) 
+		{
+			int startMillisAfterDivide = subtitleData.startInMillis;
+
+			int startHour = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.hourInMillis);
+			startMillisAfterDivide -= (startHour * CommonUtils.hourInMillis);
+
+			int startMinute = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.MinInMillis);
+			startMillisAfterDivide -= (startMinute * CommonUtils.MinInMillis);
+
+			int startSecond = CommonUtils.GetIntFromDividedInt(startMillisAfterDivide, CommonUtils.SecInMillis);
+			startMillisAfterDivide -= startSecond * CommonUtils.SecInMillis;
+
+			string outputString = "";
+			// start timestamp
+			outputString += CommonUtils.GetTwoDigitStringFromInt(startHour);
+			outputString += ":";
+			outputString += CommonUtils.GetTwoDigitStringFromInt(startMinute);
+			outputString += ":";
+			outputString += CommonUtils.GetTwoDigitStringFromInt(startSecond);
+			outputString += ".";
+			outputString += CommonUtils.GetThreeDigitStringFromInt(startMillisAfterDivide);
+
+			// "arrow"
+			outputString += ",";
+
+			int endMillisAfterDivide = subtitleData.endInMillis;
+
+			int endHour = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.hourInMillis);
+			endMillisAfterDivide -= (endHour * CommonUtils.hourInMillis);
+
+			int endMinute = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.MinInMillis);
+			endMillisAfterDivide -= (endMinute * CommonUtils.MinInMillis);
+
+			int endSecond = CommonUtils.GetIntFromDividedInt(endMillisAfterDivide, CommonUtils.SecInMillis);
+			endMillisAfterDivide -= endSecond * CommonUtils.SecInMillis;
+
+			//end timestamp
+			outputString += CommonUtils.GetTwoDigitStringFromInt(endHour);
+			outputString += ":";
+			outputString += CommonUtils.GetTwoDigitStringFromInt(endMinute);
+			outputString += ":";
+			outputString += CommonUtils.GetTwoDigitStringFromInt(endSecond);
+			outputString += ".";
+			outputString += CommonUtils.GetThreeDigitStringFromInt(endMillisAfterDivide);
+
+			return outputString;
 		}
 	}
 }

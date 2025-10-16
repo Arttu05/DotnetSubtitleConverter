@@ -66,6 +66,9 @@ namespace DotnetSubtitleConverter
 				case SubtitleType.VTT:
 					outputString = VTT.GetConvertedString(subtitleData);
 					break;
+				case SubtitleType.SBV:
+					outputString = SBV.GetConvertedString(subtitleData);
+					break;
 			}
 
 

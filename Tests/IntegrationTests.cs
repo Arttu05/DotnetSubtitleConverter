@@ -133,5 +133,71 @@ namespace IntegrationTests
 
 		}
 
+		[Test]
+		public void VTT_To_SBV()
+		{
+
+			ConvertTest(Consts.VTT_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SBV);
+
+		}
+
+
+		public void ConvertTest(string filePath, SubtitleConverter.SubtitleType toType)
+		{
+			string outputString = SubtitleConverter.ConvertTo(filePath, toType);
+
+			Stream streamFromString = TestUtils.GetStreamFromString(outputString);
+
+			StreamReader output_streamReader = new(streamFromString);
+			StreamReader original_streamReader = new(filePath);
+
+
+			List<SubtitleData> originalData;
+			List<SubtitleData> converterData;
+
+			switch (toType)
+			{
+				case SubtitleConverter.SubtitleType.SBV:
+					converterData = SBV.GetSubtitleData(ref output_streamReader);
+					break;
+				case SubtitleConverter.SubtitleType.VTT:
+					converterData = VTT.GetSubtitleData(ref output_streamReader);
+					break;
+				case SubtitleConverter.SubtitleType.SRT:
+					converterData = SRT.GetSubtitleData(ref output_streamReader);
+					break;
+				default:
+					throw new Exception("ConvertTest() could not get subtitle type, make sure BOTH switch statements have all subtitle types as cases");
+			}
+
+			switch (SubtitleConverter.GetSubtitleType(filePath))
+			{
+				case SubtitleConverter.SubtitleType.SBV:
+					originalData = SBV.GetSubtitleData(ref original_streamReader);
+					break;
+				case SubtitleConverter.SubtitleType.VTT:
+					originalData = VTT.GetSubtitleData(ref original_streamReader);
+					break;
+				case SubtitleConverter.SubtitleType.SRT:
+					originalData = SRT.GetSubtitleData(ref original_streamReader);
+					break;
+				default:
+					throw new Exception("ConvertTest() could not get subtitle type, make sure BOTH switch statements have all subtitle types as cases");
+			}
+
+			Assert.That(converterData.Count, Is.EqualTo(originalData.Count));
+
+			for (int i = 0; i < originalData.Count; i++)
+			{
+				SubtitleData currentOriginalData = originalData[i];
+				SubtitleData currentConvertedData = converterData[i];
+
+				Assert.That(currentConvertedData.startInMillis, Is.EqualTo(currentOriginalData.startInMillis));
+				Assert.That(currentConvertedData.endInMillis, Is.EqualTo(currentOriginalData.endInMillis));
+				Assert.That(currentConvertedData.subtitleContent, Is.EqualTo(currentOriginalData.subtitleContent));
+
+			}
+		}
+
 	}
 }

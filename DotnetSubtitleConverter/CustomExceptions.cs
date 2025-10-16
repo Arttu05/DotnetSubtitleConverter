@@ -34,4 +34,18 @@ namespace DotnetSubtitleConverter
 			: base(message, innerException)
 		{ }
 	}
+
+	public class SubtitleWritingException : Exception
+	{
+		public SubtitleWritingException()
+		{ }
+
+		public SubtitleWritingException(string message)
+			: base(message)
+		{ }
+
+		public SubtitleWritingException(string message, Exception innerException)
+			: base(message, innerException)
+		{ }
+	}
 }
