@@ -187,7 +187,7 @@ namespace DotnetSubtitleConverter.Subtitles
 
 			string outputString = "";
 			// start timestamp
-			outputString += CommonUtils.GetTwoDigitStringFromInt(startHour);
+			outputString += startHour;
 			outputString += ":";
 			outputString += CommonUtils.GetTwoDigitStringFromInt(startMinute);
 			outputString += ":";
@@ -210,7 +210,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			endMillisAfterDivide -= endSecond * CommonUtils.SecInMillis;
 
 			//end timestamp
-			outputString += CommonUtils.GetTwoDigitStringFromInt(endHour);
+			outputString += endHour;
 			outputString += ":";
 			outputString += CommonUtils.GetTwoDigitStringFromInt(endMinute);
 			outputString += ":";

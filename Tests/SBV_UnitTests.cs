@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests;
 
 namespace UnitTests
 {
@@ -37,7 +38,7 @@ namespace UnitTests
 		};
 
 		[Test]
-		public void NormalTimestamp()
+		public void ReadingNormalTimestamp()
 		{
 			SubtitleData outputData = SBV.ReadTimestampString(normalTimestamp);
 
@@ -46,7 +47,7 @@ namespace UnitTests
 
 		}
 		[Test]
-		public void With2HHTimestamp()
+		public void ReadingWith2HHTimestamp()
 		{
 			SubtitleData outputData = SBV.ReadTimestampString(with2HHTimestamp);
 
@@ -56,7 +57,7 @@ namespace UnitTests
 		}
 
 		[Test]
-		public void InvalidTimestamps()
+		public void ReadingInvalidTimestamps()
 		{
 			foreach (var invalidTimestamp in invalidTimestampList) 
 			{ 
@@ -73,6 +74,62 @@ namespace UnitTests
 				}
 			
 			}
+		}
+
+		[Test]
+		public void CreateTimeStampFromData()
+		{
+			int startHour = 2;
+			int endHour = 2;
+			int startMin = 32;
+			int endMin = 33;
+			int startSecond = 43;
+			int endSecond = 12;
+			int startMilli = 200;
+			int endMilli = 100;
+
+			string expectedTimestampString = 
+			$"{startHour}:{CommonUtils.GetTwoDigitStringFromInt(startMin)}:{CommonUtils.GetTwoDigitStringFromInt(startSecond)}.{CommonUtils.GetThreeDigitStringFromInt(startMilli)}"
+			+$",{endHour}:{CommonUtils.GetTwoDigitStringFromInt(endMin)}:{CommonUtils.GetTwoDigitStringFromInt(endSecond)}.{CommonUtils.GetThreeDigitStringFromInt(endMilli)}";
+
+			SubtitleData testData = new SubtitleData()
+			{
+				startInMillis = (startHour * CommonUtils.hourInMillis) + (startMin * CommonUtils.MinInMillis) + (startSecond * CommonUtils.SecInMillis ) + startMilli,
+				endInMillis = (endHour * CommonUtils.hourInMillis) + (endMin * CommonUtils.MinInMillis) + (endSecond * CommonUtils.SecInMillis) + endMilli,
+				subtitleContent = "test"
+			};
+
+			string actualTimestamp = SBV.GetTimestampString(testData);
+
+			Assert.That(actualTimestamp, Is.EqualTo(expectedTimestampString));
+		}
+
+		[Test]
+		public void ReadingOneLine()
+		{
+			string testLines = "line1\n\nline2";
+			string exceptedString = "line1";
+
+			Stream lineStream = TestUtils.GetStreamFromString(testLines);
+			StreamReader reader = new StreamReader(lineStream);
+
+			string actualString =  SBV.GetSubtitleContent(ref reader);
+
+			Assert.That(actualString, Is.EqualTo(exceptedString));
+		}
+
+		[Test]
+		public void ReadingTwoLines()
+		{
+			string testLines = "line1\nline2\n\nline3";
+			string exceptedString = "line1\nline2";
+
+			Stream lineStream = TestUtils.GetStreamFromString(testLines);
+			StreamReader reader = new StreamReader(lineStream);
+
+			string actualString = SBV.GetSubtitleContent(ref reader);
+
+			Assert.That(actualString, Is.EqualTo(exceptedString));
 		}
 
 	}
