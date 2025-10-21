@@ -5,6 +5,7 @@
 ## Supported subtitle formats
 - SRT
 - VTT
+- SBV
 
 ## Usage
 
