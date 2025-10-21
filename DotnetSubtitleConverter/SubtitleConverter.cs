@@ -13,7 +13,8 @@ namespace DotnetSubtitleConverter
 		{
 			SRT,
 			VTT,
-			SBV
+			SBV,
+			ASS
 		}
 
 		/// <summary>
@@ -52,6 +53,9 @@ namespace DotnetSubtitleConverter
 					fileStream = GetFileStream(filePath);
 					subtitleData = SBV.GetSubtitleData(ref fileStream);
 					break;
+				case SubtitleType.ASS:
+					subtitleData = ASS.GetSubtitleData(ref fileStream);
+					break;
 			}
 			fileStream.Close();
 
@@ -68,6 +72,9 @@ namespace DotnetSubtitleConverter
 					break;
 				case SubtitleType.SBV:
 					outputString = SBV.GetConvertedString(subtitleData);
+					break;
+				case SubtitleType.ASS:
+					outputString = ASS.GetConvertedString(subtitleData);
 					break;
 			}
 
@@ -99,6 +106,11 @@ namespace DotnetSubtitleConverter
 			if (SBV.Check(ref fileStream))
 			{
 				return SubtitleType.SBV;
+			}
+			fileStream = GetFileStream(filePath);
+			if (ASS.Check(ref fileStream)) 
+			{ 
+				return SubtitleType.ASS; 
 			}
 
 			throw new InvalidSubtitleException("subtitle is not valid or not in supported format");
