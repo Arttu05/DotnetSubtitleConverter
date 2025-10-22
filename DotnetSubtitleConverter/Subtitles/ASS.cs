@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,7 +16,7 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		public static List<SubtitleData> GetSubtitleData(ref StreamReader reader)
 		{
-
+			List<SubtitleData> subtitleDataList = new();
 			ASSFormatContainer ASSFormat = new ASSFormatContainer();
 			ReadToEvents(ref reader);
 
@@ -33,10 +35,28 @@ namespace DotnetSubtitleConverter.Subtitles
 				foundFormat = true;
 			}
 
+			while(reader.EndOfStream == false)
+			{
+				string expectedDialogue = reader.ReadLine();
+
+				if(Regex.Match(expectedDialogue, "^\\[.*\\]$").Success)
+				{
+					break;
+				}
+
+				SubtitleData? possibleSubtitleData = ReadDialogue(expectedDialogue, ASSFormat);
+
+				if (possibleSubtitleData == null) 
+				{
+					continue;
+				}
+
+				subtitleDataList.Add(possibleSubtitleData);
+
+			}
 
 
-
-			throw new NotImplementedException();
+			return subtitleDataList;
 		}
 
 		public static string GetConvertedString(List<SubtitleData> subtitleData)
@@ -59,9 +79,21 @@ namespace DotnetSubtitleConverter.Subtitles
 			}		
 		}
 
-		internal static Match? ReadDialogue(string expectedDialogue)
+		internal static SubtitleData ReadDialogue(string expectedDialogue, ASSFormatContainer format)
 		{
 			string regexPattern = "Dialogue: ?([^,]+),([^,]+),([^,]+),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),(.+)";
+
+			Match dialogueMatch = Regex.Match(expectedDialogue, regexPattern);
+
+
+			if(dialogueMatch.Success == false)
+			{
+				return null;
+			}
+
+			
+
+
 
 			return null;
 		}
@@ -103,6 +135,50 @@ namespace DotnetSubtitleConverter.Subtitles
 			}
 
 			return returnValue;
+
+		}
+
+		internal static SubtitleData GetDialogueDataFromMatch(Match dialogueMatch, ASSFormatContainer format)
+		{
+
+			string endString = dialogueMatch.Groups[(int)format.endIndex].Value;
+
+			string startString = dialogueMatch.Groups[(int)format.startIndex].Value;
+
+			// last value is always the text
+			string dialogueText = dialogueMatch.Groups[dialogueMatch.Groups.Count - 1].Value;
+
+			dialogueText = dialogueText.Replace("\\n", "\n");
+
+			string overWrittenStylePattern = "\\{.*?\\}";
+
+			dialogueText = Regex.Replace(dialogueText, overWrittenStylePattern, string.Empty);
+
+			return new SubtitleData(){
+				endInMillis = GetTimeInMillisFromTimestamp(endString),
+				startInMillis = GetTimeInMillisFromTimestamp(startString),
+				subtitleContent = dialogueText
+			};
+		}
+
+		internal static int GetTimeInMillisFromTimestamp(string timestamp)
+		{
+			// in regexPattern replace "^(\\d+)" with "^(\\d)", if you want to only support "valid" timestamps
+			// so timestamps that can only be up to 9 hours.
+			string regexPattern = "^(\\d+):([0-5]\\d):([0-5]\\d)\\.(\\d{2})$";
+			Match match = Regex.Match(timestamp, regexPattern);
+
+			if (!int.TryParse(match.Groups[1].Value, out int hours) ||
+				!int.TryParse(match.Groups[2].Value, out int minutes) ||
+				!int.TryParse(match.Groups[3].Value, out int seconds) ||
+				!int.TryParse(match.Groups[4].Value, out int centiseconds))
+			{
+				throw new InvalidSubtitleException("Invalid number format in timestamp");
+			}
+
+			int timeInMillis = CommonUtils.GetMillisFromTime(hours, minutes, seconds, (centiseconds * 10));
+
+			return timeInMillis;
 
 		}
 
