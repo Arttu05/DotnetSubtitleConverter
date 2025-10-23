@@ -141,7 +141,7 @@ namespace IntegrationTests
 
 		}
 
-
+		
 		public void ConvertTest(string filePath, SubtitleConverter.SubtitleType toType)
 		{
 			string outputString = SubtitleConverter.ConvertTo(filePath, toType);

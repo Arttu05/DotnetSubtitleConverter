@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="subtitle_files\ass\ASS_example.ass">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="subtitle_files\sbv\SBV_example.sbv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

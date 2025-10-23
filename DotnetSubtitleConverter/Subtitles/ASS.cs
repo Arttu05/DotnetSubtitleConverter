@@ -91,11 +91,11 @@ namespace DotnetSubtitleConverter.Subtitles
 				return null;
 			}
 
-			
+			SubtitleData subtitle = GetDialogueDataFromMatch(dialogueMatch, format);
 
 
 
-			return null;
+			return subtitle;
 		}
 
 		internal static ASSFormatContainer? ReadASSFormat(string expectedFormat)
@@ -149,6 +149,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			string dialogueText = dialogueMatch.Groups[dialogueMatch.Groups.Count - 1].Value;
 
 			dialogueText = dialogueText.Replace("\\n", "\n");
+			dialogueText = dialogueText.Replace("\\N", "\n");
 
 			string overWrittenStylePattern = "\\{.*?\\}";
 
