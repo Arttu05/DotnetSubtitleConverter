@@ -35,5 +35,39 @@ namespace UnitTests
 
 		}
 
+		[Test]
+		public void ASS_WriteTest()
+		{
+			List<SubtitleData> data = new List<SubtitleData>()
+			{
+				new SubtitleData()
+				{
+					startInMillis = 12330,
+					subtitleContent = "test",
+					endInMillis= 15000
+				},
+				new SubtitleData()
+				{
+					startInMillis = 505000,
+					subtitleContent = "test 2",
+					endInMillis= 506000
+				},
+
+			};
+
+			string output = ASS.GetConvertedString(data);
+
+			StreamReader reader = new(TestUtils.GetStreamFromString(output));
+
+			List<SubtitleData> outputDataList = ASS.GetSubtitleData(ref reader);
+
+			for(int i = 0; i < outputDataList.Count; i++)
+			{
+				Assert.That(outputDataList[i].startInMillis, Is.EqualTo(data[i].startInMillis));
+				Assert.That(outputDataList[i].endInMillis, Is.EqualTo(data[i].endInMillis));
+				Assert.That(outputDataList[i].subtitleContent, Is.EqualTo(data[i].subtitleContent));
+			}
+		}
+
 	}
 }

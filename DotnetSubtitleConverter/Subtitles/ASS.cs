@@ -12,6 +12,20 @@ namespace DotnetSubtitleConverter.Subtitles
 	internal static class ASS
 	{
 
+		const string formatNotFoundMessage = "could not find 'Format:'";
+
+		const string defaultOutputSettings =
+@"[Script Info]
+; DotnetSubtitleConverter file
+Title: DotnetSubtitleConverter file
+ScriptType: v4.00+
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,22,&H00FFFFFF,&H000000FF,&HFA000000,&HFA000000,0,0,0,0,110,100,1,0,1,1,1,2,10,10,5,1";
+
+		const string defaultOutputFormat = "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text";
+
 		// http://www.tcax.org/docs/ass-specs.htm
 
 		public static List<SubtitleData> GetSubtitleData(ref StreamReader reader)
@@ -23,7 +37,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			bool foundFormat = false;
 			while(foundFormat == false)
 			{
-				string expectedFormat = reader.ReadLine() ?? throw new InvalidSubtitleException();
+				string expectedFormat = reader.ReadLine() ?? throw new InvalidSubtitleException(formatNotFoundMessage);
 				ASSFormatContainer? potentialFormat = ReadASSFormat(expectedFormat);
 
 				if (potentialFormat == null)
@@ -39,6 +53,7 @@ namespace DotnetSubtitleConverter.Subtitles
 			{
 				string expectedDialogue = reader.ReadLine();
 
+				//other section starts
 				if(Regex.Match(expectedDialogue, "^\\[.*\\]$").Success)
 				{
 					break;
@@ -61,25 +76,89 @@ namespace DotnetSubtitleConverter.Subtitles
 
 		public static string GetConvertedString(List<SubtitleData> subtitleData)
 		{
-			throw new NotImplementedException();
+			string outputString = "";
+
+			outputString += defaultOutputSettings;
+			outputString += "\n\n";
+			outputString += "[Events]";
+			outputString += "\n";
+			outputString += defaultOutputFormat;
+
+			foreach(SubtitleData data in subtitleData)
+			{
+				outputString += $"\nDialogue: 0,{GetTimestampStringFromMillis(data.startInMillis)},{GetTimestampStringFromMillis(data.endInMillis)},Default,,0,0,0,,{data.subtitleContent}";
+			}
+
+			return outputString;
 		}
 
 		public static bool Check(ref StreamReader reader)
 		{
-			throw new NotImplementedException();
+
+			ASSFormatContainer format = new();
+
+			List<SubtitleData> tempData = new();
+
+			ReadToEvents(ref reader);
+
+			bool formatFound = false;
+			while(formatFound == false)
+			{
+				string expectedFormat = reader.ReadLine() ?? throw new InvalidSubtitleException(formatNotFoundMessage);
+				ASSFormatContainer? potentialFormat = ReadASSFormat(expectedFormat);
+
+				if (potentialFormat == null)
+				{
+					continue;
+				}
+
+				format = (ASSFormatContainer)potentialFormat;
+
+				formatFound = true;
+
+			}
+
+			while(reader.EndOfStream == false)
+			{
+
+				string expectedDialogue = reader.ReadLine();
+
+				//other section starts
+				if(Regex.Match(expectedDialogue, "^\\[.*\\]$").Success)
+				{
+					break;
+				}
+
+				SubtitleData? possibleSubtitleData = ReadDialogue(expectedDialogue, format);
+
+				if(possibleSubtitleData == null)
+				{
+					continue;
+				}
+
+				tempData.Add(possibleSubtitleData);
+
+			}
+
+			if(tempData.Count == 0)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		internal static void ReadToEvents(ref StreamReader reader) 
 		{ 
-			string currentLine = reader.ReadLine() ?? throw new InvalidSubtitleException();
+			string currentLine = reader.ReadLine() ?? throw new InvalidSubtitleException("[Events] was not found");
 
 			while (currentLine != "[Events]")
 			{
-				currentLine = reader.ReadLine() ?? throw new InvalidSubtitleException();
+				currentLine = reader.ReadLine() ?? throw new InvalidSubtitleException("[Events] was not found");
 			}		
 		}
 
-		internal static SubtitleData ReadDialogue(string expectedDialogue, ASSFormatContainer format)
+		internal static SubtitleData? ReadDialogue(string expectedDialogue, ASSFormatContainer format)
 		{
 			string regexPattern = "Dialogue: ?([^,]+),([^,]+),([^,]+),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),(.+)";
 
@@ -181,6 +260,32 @@ namespace DotnetSubtitleConverter.Subtitles
 
 			return timeInMillis;
 
+		}
+
+		internal static string GetTimestampStringFromMillis(int timestampInMillis)
+		{
+			int millisAfterDivide = timestampInMillis;
+
+			int hours = CommonUtils.GetIntFromDividedInt(millisAfterDivide, CommonUtils.hourInMillis);
+			millisAfterDivide -= (hours * CommonUtils.hourInMillis);
+
+			int minutes = CommonUtils.GetIntFromDividedInt(millisAfterDivide, CommonUtils.MinInMillis);
+			millisAfterDivide -= (minutes * CommonUtils.MinInMillis);
+
+			int seconds = CommonUtils.GetIntFromDividedInt(millisAfterDivide, CommonUtils.SecInMillis);
+			millisAfterDivide -= seconds * CommonUtils.SecInMillis;
+
+			string outputString = "";
+			// start timestamp
+			outputString += hours;
+			outputString += ":";
+			outputString += CommonUtils.GetTwoDigitStringFromInt(minutes);
+			outputString += ":";
+			outputString += CommonUtils.GetTwoDigitStringFromInt(seconds);
+			outputString += ".";
+			outputString += CommonUtils.GetTwoDigitStringFromInt((millisAfterDivide / 10));
+
+			return outputString;
 		}
 
 	}
