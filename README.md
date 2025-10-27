@@ -20,7 +20,7 @@
 - SRT
 - VTT
 - SBV
-- ASS (in development)
+- ASS
 
 ## How to add to your project
 
