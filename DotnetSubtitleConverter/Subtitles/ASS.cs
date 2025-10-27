@@ -86,7 +86,7 @@ Style: Default,Arial,22,&H00FFFFFF,&H000000FF,&HFA000000,&HFA000000,0,0,0,0,110,
 
 			foreach(SubtitleData data in subtitleData)
 			{
-				outputString += $"\nDialogue: 0,{GetTimestampStringFromMillis(data.startInMillis)},{GetTimestampStringFromMillis(data.endInMillis)},Default,,0,0,0,,{data.subtitleContent}";
+				outputString += $"\nDialogue: 0,{GetTimestampStringFromMillis(data.startInMillis)},{GetTimestampStringFromMillis(data.endInMillis)},Default,,0,0,0,,{data.subtitleContent.Replace("\n","\\n")}";
 			}
 
 			return outputString;

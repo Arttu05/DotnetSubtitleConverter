@@ -250,7 +250,14 @@ namespace DotnetSubtitleConverter.Subtitles
                 currentLine = reader.ReadLine();
             }
 
-            return outputString;
+            //removes "{\*}" strings.
+            outputString = Regex.Replace(outputString, @"{\\[a-zA-Z0-9\\]+}", string.Empty);
+
+            // removes "<i> </i>" type of tags
+            outputString = Regex.Replace(outputString, @"<i>|<\/i>", string.Empty);
+
+
+			return outputString;
         }
     }
 }

@@ -141,8 +141,32 @@ namespace IntegrationTests
 
 		}
 
-		
-		public void ConvertTest(string filePath, SubtitleConverter.SubtitleType toType)
+		[Test]
+		public void ASS_To_SBV()
+		{
+			ConvertTest(Consts.ASS_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SBV);
+		}
+
+		[Test]
+		public void VTT_To_ASS()
+		{
+			ConvertTest(Consts.VTT_EXAMPLE_FILE, SubtitleConverter.SubtitleType.ASS, 10);
+		}
+
+		/// <summary>
+		/// Tries to convert given file to another format and then check that all timings and dialogues
+		/// are the same
+		/// </summary>
+		/// <param name="filePath"></param>
+		/// <param name="toType"></param>
+		/// <param name="timingForgivness"> 
+		/// Some formats like ASS are in centiseconds so values like 115ms cannot be represented in ASS format. 
+		/// Instead the 115ms would be 110ms.
+		/// "timingForgivness" will divide timings with given int.
+		/// In case of ASS subtitles give value "10".
+		/// </param>
+		/// <exception cref="Exception"></exception>
+		public void ConvertTest(string filePath, SubtitleConverter.SubtitleType toType, int timingForgivness = 0)
 		{
 			string outputString = SubtitleConverter.ConvertTo(filePath, toType);
 
@@ -166,6 +190,9 @@ namespace IntegrationTests
 				case SubtitleConverter.SubtitleType.SRT:
 					converterData = SRT.GetSubtitleData(ref output_streamReader);
 					break;
+				case SubtitleConverter.SubtitleType.ASS:
+					converterData = ASS.GetSubtitleData(ref output_streamReader);
+					break;
 				default:
 					throw new Exception("ConvertTest() could not get subtitle type, make sure BOTH switch statements have all subtitle types as cases");
 			}
@@ -181,6 +208,9 @@ namespace IntegrationTests
 				case SubtitleConverter.SubtitleType.SRT:
 					originalData = SRT.GetSubtitleData(ref original_streamReader);
 					break;
+				case SubtitleConverter.SubtitleType.ASS:
+					originalData = ASS.GetSubtitleData(ref original_streamReader);
+					break;
 				default:
 					throw new Exception("ConvertTest() could not get subtitle type, make sure BOTH switch statements have all subtitle types as cases");
 			}
@@ -191,9 +221,18 @@ namespace IntegrationTests
 			{
 				SubtitleData currentOriginalData = originalData[i];
 				SubtitleData currentConvertedData = converterData[i];
+				if(timingForgivness == 0)
+				{
+					Assert.That(currentConvertedData.startInMillis, Is.EqualTo(currentOriginalData.startInMillis));
+					Assert.That(currentConvertedData.endInMillis, Is.EqualTo(currentOriginalData.endInMillis));
+				}
+				else
+				{
+					Assert.That((currentConvertedData.startInMillis / timingForgivness), Is.EqualTo((currentOriginalData.startInMillis / timingForgivness)));
+					Assert.That((currentConvertedData.endInMillis / timingForgivness), Is.EqualTo((currentOriginalData.endInMillis / timingForgivness)));
+					
+				}
 
-				Assert.That(currentConvertedData.startInMillis, Is.EqualTo(currentOriginalData.startInMillis));
-				Assert.That(currentConvertedData.endInMillis, Is.EqualTo(currentOriginalData.endInMillis));
 				Assert.That(currentConvertedData.subtitleContent, Is.EqualTo(currentOriginalData.subtitleContent));
 
 			}

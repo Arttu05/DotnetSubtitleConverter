@@ -100,6 +100,21 @@ namespace UnitTests
 
 
 		}
+		[Test]
+		public void SRT_RemoveStylingFromLine()
+		{
+			string expectedString = "test2";
+
+			string lineToReadString = $"<i>{{\\an8}}{expectedString}</i>\n\n";
+
+			Stream lineToReadStream = TestUtils.GetStreamFromString(lineToReadString);
+
+			StreamReader sr = new StreamReader(lineToReadStream);
+			string outputString = SRT.GetSubtitleContent(ref sr);
+			Assert.That(outputString, Is.EqualTo(expectedString));
+
+
+		}
 
 
 		[Test]
