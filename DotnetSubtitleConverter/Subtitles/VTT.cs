@@ -257,6 +257,9 @@ namespace DotnetSubtitleConverter.Subtitles
 				currentLine = reader.ReadLine();
 			}
 
+			// removes "<i> </i>" type of tags
+			outputString = Regex.Replace(outputString, @"<i>|<\/i>", string.Empty);
+
 			return outputString;
 		}
 

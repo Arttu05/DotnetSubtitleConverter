@@ -69,5 +69,100 @@ namespace UnitTests
 			}
 		}
 
+		[Test]
+		public void ReadFormatTest()
+		{
+			string formatString = "Format: Layer, Start, Style, Name, End, MarginL, MarginR, MarginV, Effect, Text";
+			int expectedStartIndex = 2;
+			int expectedEndIndex = 5;
+
+			ASSFormatContainer? format = ASS.ReadASSFormat(formatString);
+		
+			if(format == null)
+			{
+				Assert.Fail("format was null");
+			}
+
+			Assert.That(format.Value.startIndex, Is.EqualTo(expectedStartIndex));
+			Assert.That(format.Value.endIndex, Is.EqualTo(expectedEndIndex));
+
+		}
+
+		[Test]
+		public void ReadDialogueTest()
+		{
+			ASSFormatContainer format = new()
+			{
+				startIndex = 2,
+				endIndex = 3,
+			};
+
+			string expectedDialogueText = "Ah. Got ya.";
+			int expectedStartTime = 30110;
+			int expectedEndTime = 31830;
+
+			string testDialogue = $"Dialogue: 0,0:00:30.11,0:00:31.83,Default,,0,0,0,,{expectedDialogueText}";
+
+			SubtitleData? dialogueData = ASS.ReadDialogue(testDialogue, format);
+
+			if(dialogueData == null)
+			{
+				Assert.Fail("dialogfueData was null");
+			}
+
+			Assert.That(dialogueData.startInMillis, Is.EqualTo(expectedStartTime));
+			Assert.That(dialogueData.endInMillis, Is.EqualTo(expectedEndTime));
+			Assert.That(dialogueData.subtitleContent, Is.EqualTo(expectedDialogueText));
+
+
+		}
+
+		[Test]
+		public void ReadDialogueWithStylingTest()
+		{
+			ASSFormatContainer format = new()
+			{
+				startIndex = 2,
+				endIndex = 3,
+			};
+
+			string actualDialogueText = "Ah. Got ya.";
+			int actualStartTime = 30110;
+			int actualEndTime = 31830;
+
+			string testDialogue = $"Dialogue: 0,0:00:30.11,0:00:31.83,Default,,0,0,0,,{{\\rAlternate}}{actualDialogueText}";
+
+			SubtitleData? dialogueData = ASS.ReadDialogue(testDialogue, format);
+
+			if(dialogueData == null)
+			{
+				Assert.Fail("dialogfueData was null");
+			}
+
+			Assert.That(dialogueData.startInMillis, Is.EqualTo(actualStartTime));
+			Assert.That(dialogueData.endInMillis, Is.EqualTo(actualEndTime));
+			Assert.That(dialogueData.subtitleContent, Is.EqualTo(actualDialogueText));
+
+
+		}
+
+		[Test]
+		public void CreateTimestampString()
+		{
+			int hours = 2;
+			int minutes = 12;
+			int seconds = 41;
+			int milliseconds = 315;
+			int timestampInMillis = (CommonUtils.hourInMillis * hours) + (CommonUtils.MinInMillis * minutes) + (CommonUtils.SecInMillis * seconds) + milliseconds;
+
+			string expectedTimestampString = $"{hours}:{CommonUtils.GetTwoDigitStringFromInt(minutes)}:{CommonUtils.GetTwoDigitStringFromInt(seconds)}.{CommonUtils.GetTwoDigitStringFromInt(milliseconds / 10)}";
+
+			string outputTimestampString = ASS.GetTimestampStringFromMillis(timestampInMillis);
+
+			Assert.That(outputTimestampString, Is.EqualTo(expectedTimestampString));
+			
+
+
+		}
 	}
 }

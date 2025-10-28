@@ -103,5 +103,23 @@ namespace UnitTests
 
 
 		}
+
+
+		[Test]
+		public void VTT_LineWithTags()
+		{
+			string expectedLine = "some line";
+
+			string lineToReadString = $"<i>{expectedLine}</i>\n\n";
+
+			Stream lineToReadStream = TestUtils.GetStreamFromString(lineToReadString);
+
+			StreamReader sr = new StreamReader(lineToReadStream);
+
+			string outputString = VTT.GetSubtitleContent(ref sr);
+
+			Assert.That(outputString, Is.EqualTo(expectedLine));
+
+		}
 	}
 }
