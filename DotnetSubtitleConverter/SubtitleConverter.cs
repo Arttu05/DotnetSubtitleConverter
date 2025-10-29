@@ -4,18 +4,18 @@ using System.Reflection.PortableExecutable;
 
 namespace DotnetSubtitleConverter
 {
+	/// <summary>
+	/// Subtitle formats.
+	/// </summary>
+	public enum SubtitleType
+	{
+		SRT,
+		VTT,
+		SBV,
+		ASS
+	}
 	public static class SubtitleConverter
 	{
-		/// <summary>
-		/// Subtitle formats.
-		/// </summary>
-		public enum SubtitleType
-		{
-			SRT,
-			VTT,
-			SBV,
-			ASS
-		}
 
 		/// <summary>
 		/// Used to convert subtitle file to another format. Throws "InvalidSubtitleException" if given subtitle is not in a supported format.

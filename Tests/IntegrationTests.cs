@@ -19,42 +19,42 @@ namespace IntegrationTests
 		[Test]
 		public void SRT_To_VTT()
 		{
-			string output = SubtitleConverter.ConvertTo(Consts.SRT_EXAMPLE_FILE, SubtitleConverter.SubtitleType.VTT);
+			string output = SubtitleConverter.ConvertTo(Consts.SRT_EXAMPLE_FILE, SubtitleType.VTT);
 			
 			StreamWriter outputWriter = new StreamWriter(Consts.SRT_TO_VTT_PATH);
 			outputWriter.Write(output);
 			outputWriter.Close();
 
-			SubtitleConverter.SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(Consts.SRT_TO_VTT_PATH);
+			SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(Consts.SRT_TO_VTT_PATH);
 			
-			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleConverter.SubtitleType.VTT));
+			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleType.VTT));
 		}
 
 		[Test]
 		public void VTT_To_SRT()
 		{
-			string output = SubtitleConverter.ConvertTo(Consts.	VTT_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SRT);
+			string output = SubtitleConverter.ConvertTo(Consts.	VTT_EXAMPLE_FILE, SubtitleType.SRT);
 			StreamWriter sw = new StreamWriter(Consts.VTT_TO_SRT_PATH);
 			sw.Write(output);
 			sw.Close();
 
-			SubtitleConverter.SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(Consts.VTT_TO_SRT_PATH);
+			SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(Consts.VTT_TO_SRT_PATH);
 
-			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleConverter.SubtitleType.SRT));
+			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleType.SRT));
 		}
 
 		[Test]
 		public void VTT_To_SRT_WithOffset()
 		{
 			int offset = 100000;
-			string output = SubtitleConverter.ConvertTo(Consts.VTT_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SRT,offset);
+			string output = SubtitleConverter.ConvertTo(Consts.VTT_EXAMPLE_FILE, SubtitleType.SRT,offset);
 			StreamWriter sw = new StreamWriter(Consts.VTT_TO_SRT_WITH_OFFSET_PATH);
 			sw.Write(output);
 			sw.Close();
 
-			SubtitleConverter.SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(Consts.VTT_TO_SRT_WITH_OFFSET_PATH);
+			SubtitleType outputSubtitleType = SubtitleConverter.GetSubtitleType(Consts.VTT_TO_SRT_WITH_OFFSET_PATH);
 
-			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleConverter.SubtitleType.SRT));
+			Assert.That(outputSubtitleType, Is.EqualTo(SubtitleType.SRT));
 
 			StreamReader outputReader = new(Consts.VTT_TO_SRT_WITH_OFFSET_PATH);
 			StreamReader originalFileReader = new(Consts.VTT_EXAMPLE_FILE);
@@ -77,9 +77,9 @@ namespace IntegrationTests
 		[Test]
 		public void Check_VTT_WithPositions()
 		{
-			SubtitleConverter.SubtitleType outputType = SubtitleConverter.GetSubtitleType(Consts.VTT_EXAMPLE_WITH_POSITION);
+			SubtitleType outputType = SubtitleConverter.GetSubtitleType(Consts.VTT_EXAMPLE_WITH_POSITION);
 
-			Assert.That(outputType, Is.EqualTo(SubtitleConverter.SubtitleType.VTT));
+			Assert.That(outputType, Is.EqualTo(SubtitleType.VTT));
 
 			StreamReader sr = new(Consts.VTT_EXAMPLE_WITH_POSITION);
 
@@ -92,9 +92,9 @@ namespace IntegrationTests
 		[Test]
 		public void Check_VTT_WithRegion()
 		{
-			SubtitleConverter.SubtitleType outputType = SubtitleConverter.GetSubtitleType(Consts.VTT_EXAMPLE_WITH_REGION);
+			SubtitleType outputType = SubtitleConverter.GetSubtitleType(Consts.VTT_EXAMPLE_WITH_REGION);
 
-			Assert.That(outputType, Is.EqualTo(SubtitleConverter.SubtitleType.VTT));
+			Assert.That(outputType, Is.EqualTo(SubtitleType.VTT));
 
 			StreamReader sr = new(Consts.VTT_EXAMPLE_WITH_REGION);
 
@@ -107,7 +107,7 @@ namespace IntegrationTests
 		public void SBV_To_SRT()
 		{
 
-			string outputString = SubtitleConverter.ConvertTo(Consts.SBV_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SRT);
+			string outputString = SubtitleConverter.ConvertTo(Consts.SBV_EXAMPLE_FILE, SubtitleType.SRT);
 
 			Stream streamFromString = TestUtils.GetStreamFromString(outputString);
 
@@ -137,20 +137,20 @@ namespace IntegrationTests
 		public void VTT_To_SBV()
 		{
 
-			ConvertTest(Consts.VTT_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SBV);
+			ConvertTest(Consts.VTT_EXAMPLE_FILE, SubtitleType.SBV);
 
 		}
 
 		[Test]
 		public void ASS_To_SBV()
 		{
-			ConvertTest(Consts.ASS_EXAMPLE_FILE, SubtitleConverter.SubtitleType.SBV);
+			ConvertTest(Consts.ASS_EXAMPLE_FILE, SubtitleType.SBV);
 		}
 
 		[Test]
 		public void VTT_To_ASS()
 		{
-			ConvertTest(Consts.VTT_EXAMPLE_FILE, SubtitleConverter.SubtitleType.ASS, 10);
+			ConvertTest(Consts.VTT_EXAMPLE_FILE, SubtitleType.ASS, 10);
 		}
 
 		/// <summary>
@@ -166,7 +166,7 @@ namespace IntegrationTests
 		/// In case of ASS subtitles give value "10".
 		/// </param>
 		/// <exception cref="Exception"></exception>
-		public void ConvertTest(string filePath, SubtitleConverter.SubtitleType toType, int timingForgivness = 0)
+		public void ConvertTest(string filePath, SubtitleType toType, int timingForgivness = 0)
 		{
 			string outputString = SubtitleConverter.ConvertTo(filePath, toType);
 
@@ -181,16 +181,16 @@ namespace IntegrationTests
 
 			switch (toType)
 			{
-				case SubtitleConverter.SubtitleType.SBV:
+				case SubtitleType.SBV:
 					converterData = SBV.GetSubtitleData(ref output_streamReader);
 					break;
-				case SubtitleConverter.SubtitleType.VTT:
+				case SubtitleType.VTT:
 					converterData = VTT.GetSubtitleData(ref output_streamReader);
 					break;
-				case SubtitleConverter.SubtitleType.SRT:
+				case SubtitleType.SRT:
 					converterData = SRT.GetSubtitleData(ref output_streamReader);
 					break;
-				case SubtitleConverter.SubtitleType.ASS:
+				case SubtitleType.ASS:
 					converterData = ASS.GetSubtitleData(ref output_streamReader);
 					break;
 				default:
@@ -199,16 +199,16 @@ namespace IntegrationTests
 
 			switch (SubtitleConverter.GetSubtitleType(filePath))
 			{
-				case SubtitleConverter.SubtitleType.SBV:
+				case SubtitleType.SBV:
 					originalData = SBV.GetSubtitleData(ref original_streamReader);
 					break;
-				case SubtitleConverter.SubtitleType.VTT:
+				case SubtitleType.VTT:
 					originalData = VTT.GetSubtitleData(ref original_streamReader);
 					break;
-				case SubtitleConverter.SubtitleType.SRT:
+				case SubtitleType.SRT:
 					originalData = SRT.GetSubtitleData(ref original_streamReader);
 					break;
-				case SubtitleConverter.SubtitleType.ASS:
+				case SubtitleType.ASS:
 					originalData = ASS.GetSubtitleData(ref original_streamReader);
 					break;
 				default:
