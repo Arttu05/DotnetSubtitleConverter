@@ -1,6 +1,4 @@
 ﻿using DotnetSubtitleConverter.Subtitles;
-using System.IO;
-using System.Reflection.PortableExecutable;
 
 namespace DotnetSubtitleConverter
 {

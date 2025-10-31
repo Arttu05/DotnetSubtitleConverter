@@ -12,11 +12,11 @@
 	<RepositoryType>git</RepositoryType>
 	<PackageIconUrl>logo512x512.png</PackageIconUrl>
 	<Title>SubtitleConverter</Title>
-	<Description>Library that can convert subtitles to other subtitle formats
-and offset subtitle timings.</Description>
+	<Description>Library for converting subtitles to other subtitle formats.</Description>
 	<PackageIcon>Logo512x512.png</PackageIcon>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<IncludeSymbols>False</IncludeSymbols>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

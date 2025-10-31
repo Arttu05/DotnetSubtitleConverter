@@ -1,10 +1,5 @@
 ﻿using DotnetSubtitleConverter;
 using DotnetSubtitleConverter.Subtitles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests;
 
 namespace UnitTests
