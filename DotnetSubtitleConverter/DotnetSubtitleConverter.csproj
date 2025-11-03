@@ -13,21 +13,20 @@
 	<PackageIconUrl>logo512x512.png</PackageIconUrl>
 	<Title>SubtitleConverter</Title>
 	<Description>Library for converting subtitles to other subtitle formats.</Description>
-	<PackageIcon>Logo512x512.png</PackageIcon>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageIcon>nuget_assets\Logo512x512.png</PackageIcon>
+	<PackageReadmeFile>nuget_assets\README.md</PackageReadmeFile>
 	<IncludeSymbols>False</IncludeSymbols>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="nuget_assets\Logo512x512.png" />
     <EmbeddedResource Include="nuget_assets\README.md" />
   </ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="Tests" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="nuget_assets\Logo512x512.png">
+	  <None Update=".\nuget_assets\Logo512x512.png">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>

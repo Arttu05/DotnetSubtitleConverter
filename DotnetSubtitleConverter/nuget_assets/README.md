@@ -1,6 +1,8 @@
 ﻿# SubtitleConverter
 
- Simple class library, that can be used to convert subtitle files to other subtitle formats and offset subtitle timings
+Simple class library, used to convert subtitle files to other subtitle formats.
+
+Documentation can be found in the [Github page](https://github.com/Arttu05/DotnetSubtitleConverter) under the "docs" directory.
 
 ## Supported subtitle formats
 
@@ -17,12 +19,11 @@
 
 ## Usage
 
-Example usage: </br>
+Example usage:
+
 ```
 string output = SubtitleConverter.ConvertTo("./example.srt", SubtitleType.VTT)
 StreamWriter sw = new StreamWriter(output_vtt_path);
 sw.WriteLine(output);
 sw.Close();
 ```
-
-<a href="https://github.com/Arttu05/DotnetSubtitleConverter">Github page</a> contains the documentation.

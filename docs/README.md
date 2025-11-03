@@ -32,7 +32,7 @@ Parameters: </br>
 
 
 Example usage: </br>
-```
+```csharp
 string output = SubtitleConverter.ConvertTo("./example.srt", SubtitleType.VTT)
 StreamWriter sw = new StreamWriter(output_vtt_path);
 sw.WriteLine(output);
