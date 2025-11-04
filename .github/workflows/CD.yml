@@ -1,0 +1,52 @@
+name: CD
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+env:
+  PACK_OUTPUT_PATH: ./output
+
+jobs:
+  Binaries_To_Release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Add release binaries
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./DotnetSubtitleConverter/bin/Release/net8.0/DotnetSubtitleConverter.dll
+        asset_name: DotnetSubtitleConverter_${{ github.event.release.name }}_.dll
+
+  Release_To_Nuget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: set version variable
+        run: |
+          TEMP_VERSION_VAR=${{ github.event.release.name }}
+          echo "VERSION_VAR=${TEMP_VERSION_VAR#v}" >> $GITHUB_ENV
+      - name: dotnet pack
+        run: dotnet pack -p:PackageVersion=${VERSION_VAR} --configuration Release --output ${{ env.PACK_OUTPUT_PATH }}
+      - name: dotnet push
+        run: dotnet nuget push  ${{ env.PACK_OUTPUT_PATH }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
