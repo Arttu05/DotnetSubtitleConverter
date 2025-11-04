@@ -7,12 +7,10 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml">
-        <img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml/badge.svg" alt="Tests">
-    </a>
-    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/CD.yml">
-        <img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/CD.yml/badge.svg" alt="CD Pipeline">
-    </a>
+    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml"><img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml/badge.svg" alt="Tests"></a>
+    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/CD.yml"><img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/CD.yml/badge.svg" alt="CD Pipeline"></a>
+    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/Arttu05/DotnetSubtitleConverter"></a>
+    
 </p>
 
 <p align="center">
