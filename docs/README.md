@@ -24,10 +24,10 @@ using DotnetSubtitleConverter;
 Reads given file and returns the converted subtitle as a string.
 
 Parameters: </br>
-```filePath```: path to the file you want to convert. </br>
-```subtitleType```: to what format the subtitle gets converted to. </br>
-```msOffset``` \<optional\>: offset subtitle timings in milliseconds. Can be a negative number. </br>
-```returnOnOffsetOverflow``` \<optional\>: If true and offset makes subtitle timestamp negative, library will throw exception. While false and offset makes timestamp negative, will make the stamp 0. 
+```string filePath```: path to the file you want to convert. </br>
+```SubtitleType subtitleType```: to what format the subtitle gets converted to. </br>
+```int msOffset``` \<optional\>: offset subtitle timings in milliseconds. Can be a negative number. </br>
+```bool returnOnOffsetOverflow``` \<optional\>: If true and offset makes subtitle timestamp negative, library will throw exception. While false and offset makes timestamp negative, will make the stamp 0. 
 
 
 
@@ -42,7 +42,7 @@ sw.Close();
 ### ```SubtitleType GetSubtitleType()``` </br>
 
 parameters: </br>
-```filePath```: path to the file.
+```string filePath```: path to the file.
 
 Returns the type of the given subtitle as ```SubtitleType``` enum value.
 
