@@ -17,6 +17,8 @@
 	<PackageReadmeFile>nuget_assets\README.md</PackageReadmeFile>
 	<IncludeSymbols>False</IncludeSymbols>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<IncludeSymbols>true</IncludeSymbols>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
