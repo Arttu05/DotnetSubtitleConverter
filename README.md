@@ -7,9 +7,10 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml">
-        <img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml/badge.svg" alt="Tests">
-    </a>
+    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml"><img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/RunTests.yml/badge.svg" alt="Tests"></a>
+    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/CD.yml"><img src="https://github.com/Arttu05/DotnetSubtitleConverter/actions/workflows/CD.yml/badge.svg" alt="CD Pipeline"></a>
+    <a href="https://github.com/Arttu05/DotnetSubtitleConverter/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/Arttu05/DotnetSubtitleConverter"></a>
+    
 </p>
 
 <p align="center">
@@ -27,7 +28,28 @@
 | **SBV**    | YES ||
 | **ASS**    | YES | Asumes that the last field is the text/dialogue. Start and End can be anywhere in the format|
 
+## Documentation
+
+[Documentation](./docs) can be found under the "docs" directory
+
 ## How to add to your project
+
+### Nuget package
+
+This library is now available as a [nuget package](https://www.nuget.org/packages/SubtitleConverter). 
+
+Dotnet CLI:
+```
+dotnet add package SubtitleConverter --version 1.0.0
+```
+
+Visual Studio Package Manager Console: 
+```
+PM> NuGet\Install-Package SubtitleConverter -Version 1.0.0
+```
+
+
+### Manually 
 
 1. Clone this repository.
 2. build with following command ```dotnet build --configuration release```, while your working directory is in this project's root. 
@@ -43,7 +65,8 @@
             </Reference>
           </ItemGroup>
      ```
-   - 
+
+   
 ## TODO
 
 - [x] more subtitle types
@@ -51,8 +74,8 @@
 - [x] integration tests should verify outputs.
 - [x] more unit tests 
 - [x] custom exceptions
-- [ ] nuget package
-- [ ] cd pipeline
+- [x] nuget package
+- [x] cd pipeline
 
 ## How to contribute
 
