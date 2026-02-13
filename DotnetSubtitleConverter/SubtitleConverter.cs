@@ -14,6 +14,65 @@ namespace DotnetSubtitleConverter
 	}
 	public static class SubtitleConverter
 	{
+		/// <summary>
+		/// convert string of a subtitle file to another format. Throws "InvalidSubtitleException" if given subtitle is not in a supported format.
+		/// 
+		/// </summary>
+		/// <param name="fileString">subtitle file as a string</param>
+		/// <param name="subtitleType">Output format.</param>
+		/// <param name="msOffset">Offsets subtitles timestamps in milliseconds. Value can be negative. </param>
+		/// <param name="returnOnOffsetOverflow"> Throws exception if offset makes start and/or end timestamp below 0</param>
+		/// <returns>Desired subtitle type as a string</returns>
+		/// <exception cref="FileNotFoundException"></exception>
+		/// <exception cref="InvalidSubtitleException"></exception>
+		/// <exception cref="OffsetOverFlowException"></exception>
+		public static string ConvertWithStringTo(string fileString, SubtitleType subtitleType, int msOffset = 0, bool returnOnOffsetOverflow = false)
+		{
+			StreamReader fileStream = GetStreamReaderFromString(fileString);
+
+			List<SubtitleData> subtitleData = new List<SubtitleData>();
+
+			SubtitleType inputSubtitleType = GetSubtitleTypeWithString(fileString);
+
+			switch (inputSubtitleType)
+			{
+				case SubtitleType.SRT:
+					subtitleData = SRT.GetSubtitleData(ref fileStream);
+					break;
+				case SubtitleType.VTT:
+					subtitleData = VTT.GetSubtitleData(ref fileStream);
+					break;
+				case SubtitleType.SBV:
+					subtitleData = SBV.GetSubtitleData(ref fileStream);
+					break;
+				case SubtitleType.ASS:
+					subtitleData = ASS.GetSubtitleData(ref fileStream);
+					break;
+			}
+			fileStream.Close();
+
+			CommonUtils.GetSubtitleDataWithOffset(subtitleData, msOffset, returnOnOffsetOverflow);
+
+			string outputString = "";
+			switch (subtitleType)
+			{
+				case SubtitleType.SRT:
+					outputString = SRT.GetConvertedString(subtitleData);
+					break;
+				case SubtitleType.VTT:
+					outputString = VTT.GetConvertedString(subtitleData);
+					break;
+				case SubtitleType.SBV:
+					outputString = SBV.GetConvertedString(subtitleData);
+					break;
+				case SubtitleType.ASS:
+					outputString = ASS.GetConvertedString(subtitleData);
+					break;
+			}
+
+
+			return outputString;
+		}
 
 		/// <summary>
 		/// Used to convert subtitle file to another format. Throws "InvalidSubtitleException" if given subtitle is not in a supported format.
@@ -113,6 +172,39 @@ namespace DotnetSubtitleConverter
 
 			throw new InvalidSubtitleException("subtitle is not valid or not in supported format");
 		}
+		/// <summary>
+		/// Validates given string and returns the subtitle type of the string.
+		/// If no subtitle type is found throws "InvalidSubtitleException"
+		/// </summary>
+		/// <param name="fileString">string of the subtitle file</param>
+		/// <returns>value from "SubtitleType" enum, indicating the subtitle format</returns>
+		/// <exception cref="InvalidSubtitleException"></exception>
+		public static SubtitleType GetSubtitleTypeWithString(string fileString)
+		{
+			StreamReader fileStream = GetStreamReaderFromString(fileString);
+
+			if (SRT.Check(ref fileStream))
+			{
+				return SubtitleType.SRT;
+			}
+			fileStream = GetStreamReaderFromString(fileString);
+			if (VTT.Check(ref fileStream))
+			{
+				return SubtitleType.VTT;
+			}
+			fileStream = GetStreamReaderFromString(fileString);
+			if (SBV.Check(ref fileStream))
+			{
+				return SubtitleType.SBV;
+			}
+			fileStream = GetStreamReaderFromString(fileString);
+			if (ASS.Check(ref fileStream)) 
+			{ 
+				return SubtitleType.ASS; 
+			}
+
+			throw new InvalidSubtitleException("subtitle is not valid or not in supported format");
+		}
 
 		// private functions
 		private static StreamReader GetFileStream(string filePath)
@@ -124,6 +216,19 @@ namespace DotnetSubtitleConverter
 
 			StreamReader sr = new StreamReader(filePath);
 			return sr;
+		}
+
+		private static StreamReader GetStreamReaderFromString(string stringToStream)
+		{
+			MemoryStream stream = new MemoryStream();
+			StreamWriter writer = new StreamWriter(stream);
+			writer.Write(stringToStream);
+
+			writer.Flush();
+			stream.Position = 0;
+
+			return new StreamReader(stream);
+
 		}
 
 	}
