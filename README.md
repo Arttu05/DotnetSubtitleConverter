@@ -40,12 +40,12 @@ This library is now available as a [nuget package](https://www.nuget.org/package
 
 Dotnet CLI:
 ```
-dotnet add package SubtitleConverter --version 1.0.0
+dotnet add package SubtitleConverter --version 1.1.0
 ```
 
 Visual Studio Package Manager Console: 
 ```
-PM> NuGet\Install-Package SubtitleConverter -Version 1.0.0
+PM> NuGet\Install-Package SubtitleConverter -Version 1.1.0
 ```
 
 
