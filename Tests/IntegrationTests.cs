@@ -153,6 +153,43 @@ namespace IntegrationTests
 			ConvertTest(Consts.VTT_EXAMPLE_FILE, SubtitleType.ASS, 10);
 		}
 
+		[Test]
+		public void VTT_To_SRT_FileAndStringComparison()
+		{
+			StreamReader reader = new StreamReader(Consts.VTT_EXAMPLE_FILE);
+
+			string fileString = reader.ReadToEnd();
+
+			reader.Close();
+
+			string outputWithString = SubtitleConverter.ConvertWithStringTo(fileString, SubtitleType.SRT);
+			string outputWithFile = SubtitleConverter.ConvertTo(Consts.VTT_EXAMPLE_FILE, SubtitleType.SRT);
+			
+			Assert.That(outputWithFile, Is.EqualTo(outputWithString));
+		}
+
+		[Test]
+		public void VTT_To_SRT_WithFileString()
+		{
+			StreamReader reader = new StreamReader(Consts.VTT_EXAMPLE_FILE);
+
+			string fileString = reader.ReadToEnd();
+			
+			reader.Close();
+
+			string outputString = SubtitleConverter.ConvertWithStringTo(fileString, SubtitleType.SRT);
+
+			StreamReader originalReader = new StreamReader(TestUtils.GetStreamFromString(fileString));
+			StreamReader convertedReader = new StreamReader(TestUtils.GetStreamFromString(outputString));
+
+			List<SubtitleData> originalData = SRT.GetSubtitleData(ref convertedReader);
+
+			List<SubtitleData> convertedData = VTT.GetSubtitleData(ref originalReader);
+
+			CompareSubtitleDatas(originalData, convertedData);
+		}
+
+
 		/// <summary>
 		/// Tries to convert given file to another format and then check that all timings and dialogues
 		/// are the same
@@ -234,6 +271,31 @@ namespace IntegrationTests
 				}
 
 				Assert.That(currentConvertedData.subtitleContent, Is.EqualTo(currentOriginalData.subtitleContent));
+
+			}
+		}
+
+		private void CompareSubtitleDatas(List<SubtitleData> listOne, List<SubtitleData> listTwo, int timingForgivness = 0)
+		{
+			Assert.That(listOne.Count, Is.EqualTo(listTwo.Count));
+
+			for (int i = 0; i < listOne.Count; i++)
+			{
+				SubtitleData currentListOneData = listOne[i];
+				SubtitleData currentListTwoData = listTwo[i];
+				if (timingForgivness == 0)
+				{
+					Assert.That(currentListTwoData.startInMillis, Is.EqualTo(currentListOneData.startInMillis));
+					Assert.That(currentListTwoData.endInMillis, Is.EqualTo(currentListOneData.endInMillis));
+				}
+				else
+				{
+					Assert.That((currentListTwoData.startInMillis / timingForgivness), Is.EqualTo((currentListOneData.startInMillis / timingForgivness)));
+					Assert.That((currentListTwoData.endInMillis / timingForgivness), Is.EqualTo((currentListOneData.endInMillis / timingForgivness)));
+
+				}
+
+				Assert.That(currentListTwoData.subtitleContent, Is.EqualTo(currentListOneData.subtitleContent));
 
 			}
 		}
